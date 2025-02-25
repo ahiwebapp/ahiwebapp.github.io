@@ -1,0 +1,1535 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="icon" type="image/x-icon" href="static/img/ahi_fav_grey.png"/>
+    <link href="https://fonts.googleapis.com/css?family=Poppins:ital,wght@0,100;0,900;1,100;1,900&display=swap" rel="stylesheet"/>
+    <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
+
+    <!--Boxicons CSS-->
+    <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
+    <!--/Boxicons CSS-->
+
+    <title>AHI | Calculadora Dinâmica</title>
+    
+    <style>
+      * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Poppins", sans-serif;
+            background: linear-gradient(rgb(26, 36, 54), rgba(26, 36, 54, 0), rgba(255, 141, 1, 0.364)), url('static/img/background.png');
+            background-repeat: no-repeat;
+            background-size: cover;
+            color: #b0b1b3;
+            text-align: center;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 0;
+            margin: 0;
+        }
+
+        header {
+            width: 100%;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+            position: fixed;
+            top: 0;
+            border-bottom: 0px solid #b0b1b3;
+            z-index: 1000; /* Ensure header stays above menu */
+            height: 80px; /* Set fixed height for header */
+        }
+        header div {
+            justify-items: left;
+        }
+
+        header img {
+            width: 280px;
+            height: auto;
+        }
+        header h3 {
+            font-size: 14px;
+            color: #b0b1b3;
+        }
+
+        header a p {
+            color: #a5a5a5;
+            text-decoration: none;
+            font-size: 45px;
+            margin-right: 20px;        
+            transition: .4s;
+            cursor: pointer;
+        }
+        header a {
+            text-decoration: none;
+        }
+        header a p:hover {
+            color: #e59513;
+        }
+
+        #logo {
+            max-width: 20%;
+            height: auto;
+        }
+
+        #saudacao{
+            margin-top: -.5px;
+        }
+        header .data-hora {
+            font-size: 12px;
+            color: #b0b1b3;
+        }
+
+        #checkbox{
+            margin-left: -48px;
+            margin-bottom: 16px;
+        }
+
+        .divimg {
+            display: none;
+        }
+
+        #legenda {
+            display: flex;
+            position: absolute;
+            top: 70%;
+            text-decoration: none;
+            padding: 10px;
+            gap: 5px;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 25px;            
+        }
+        #legenda p {
+            font-size: 25px;            
+        }
+
+        #legenda h4 {
+            font-size: 18px;  
+            color: #b0b1b3; 
+            margin-right: 25px;  
+            transition: .4s;       
+        }    
+        #legenda h4:hover { 
+            color: #e59513;          
+        }    
+        #legenda i { 
+            font-size: 20px; 
+            justify-content: center;
+            align-items: center;
+            align-content: center;
+            justify-items: center;        
+        }
+        
+        #infoabove{
+            margin-top: 35px;
+            margin-bottom: -15px;
+        }
+        
+
+        .main-section {
+            display: flex; 
+            flex-direction: row;
+            justify-content: center; 
+            align-items: flex-start; 
+            gap: 5px;
+            width: 80%;
+            max-width: 1200px;
+            min-height: 70vh;
+
+        }
+
+        .invertido {
+            display: inline-block;
+            transform: rotate(180deg);
+        }
+        
+        /* Estilo Calculadora */
+
+        .calculadora-display {
+            font-size: 2.5em;
+            color: white;
+            text-align: right;
+            background-color: rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .calculadora-buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 5px;
+        }
+
+        .calculadora-button {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            font-size: 1.5em;
+            border-radius: 10px;
+            padding: 20px;
+            border: none;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        #opp {
+            background-color: #3993e8c2;
+        }
+        #opp:hover {
+            background-color: #2373bec2;
+        }
+        #opp1 {
+            background-color: #e59513;
+        }
+        #opp1:hover {
+            background-color: #b67206;
+        }
+
+        .calculadora-button:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .calculadora-button:active {
+            background-color: rgba(255, 255, 255, 0.4);
+        }
+         /* /Estilo Calculadora */
+
+         /* !!!Estilos compartilhados do box */
+         .secao-hotel, .calculadora {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between; 
+            min-height: 100%; 
+            width: 65% 35%;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(5px);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        /* !!!Estilos compartilhados do box */
+
+        .secao-hotel {
+            flex: 0 0 70%; /* Ocupa 70% da largura */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100%;
+            background: rgba(255, 255, 255, 0.088);
+            backdrop-filter: blur(5px);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .calculadora {
+            flex: 0 0 30%; /* Ocupa 30% da largura */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 100%;
+            background: rgba(255, 255, 255, 0.088);
+            backdrop-filter: blur(5px);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Estilo Secao Hotel*/
+
+        /* Muda a cor do placeholder para cinza claro */
+        .secao-hotel input::placeholder {
+            color: #b0b1b3; /* Altere para a cor desejada */
+            opacity: 1; /* Garante que o placeholder fique visível */
+        }
+
+        /* Caso queira um efeito ao focar no campo */
+        .secao-hotel input:focus::placeholder {
+            color: #474747; /* Cor diferente ao focar no input */
+        }
+        #quina1 {
+            border-radius: 10px 0 0 0;
+        }
+        #quina2 {
+            border-radius: 0 10px 0 0;
+        }
+
+        .secao-hotel table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .secao-hotel th, .secao-hotel td {
+            padding: 12px;
+            text-align: center;
+        }
+
+        .secao-hotel th {
+            background-color: rgba(0,0,0,0.2);
+        }
+
+        .secao-hotel input {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: #b0b1b3;
+            padding: 8px;
+            border-radius: 10px;
+            border: 1px solid #e59513;
+            width: 120px;
+            margin: 5px 10px;
+        }
+
+        .secao-hotel button {
+            background: #e59513;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: 0.3s;
+            margin: 10px 0;
+            width: 25%;
+        }
+
+        #hotel{
+            background: rgba(255, 255, 255, 0.1);
+            color: #919191;
+            padding: 8px;
+            border-radius: 10px;
+            width: 360px;
+            margin: 5px 10px;
+            text-align: left;
+            align-content: start;
+        }
+        #hotel option{
+            color: #0d1b30;
+        }
+       
+        #cliente{
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: #b0b1b3;
+            padding: 8px;
+            border-radius: 10px;
+            width: 250px;
+            margin: 5px 10px;
+            text-align: left;
+            align-content: start;
+        }
+        #chkn{
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: #b0b1b3;
+            padding: 8px;
+            border-radius: 10px;
+            width: 178px;
+            margin: 5px 10px;
+            text-align: left;
+            align-content: start;
+        }
+        #chkout{
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: #b0b1b3;
+            padding: 8px;
+            border-radius: 10px;
+            width: 178px;
+            margin: 5px 10px;
+            text-align: left;
+            align-content: start;
+        }
+        #ddline{
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: #b0b1b3;
+            padding: 8px;
+            border-radius: 10px;
+            width: 140px;
+            margin: 5px 10px;
+            text-align: left;
+            align-content: start;
+        }
+
+        /* Alternando as cores das linhas */
+        #results-body tr:nth-child(odd) {
+            background-color: #f0f0f009; /* Cor de fundo para as linhas ímpares */
+        }
+
+        #results-body tr:nth-child(even) {
+            background-color: #ffffff25; /* Cor de fundo para as linhas pares */
+        }
+        #results-body tr:last-child td:last-child {
+            border-radius: 0 0 15px 0; /* Arredonda os cantos inferior direito e inferior esquerdo */
+        }
+        #results-body tr:last-child td:first-child {
+            border-radius: 0 0 0 15px; /* Arredonda os cantos inferior direito e inferior esquerdo */
+        }
+
+
+        /* Estilo Secao Hotel*/
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .calculadora {
+                width: 85%;
+            }
+            .secao-hotel{
+                width: 99%;
+                margin-bottom: 10px;
+                margin-top: -90px;
+            }
+            
+        }
+
+        @media (max-width: 768px) {
+             /* Ajustes para a seção de resultados */
+            .main-section {
+            width: 90%; /* Aumentado de 90% para 95% */
+            }
+
+            .resultados {
+                margin: 10px -10px; /* Reduzido o margin negativo */
+                padding: 0;
+                width: 100%; /* Garante largura total */
+            }
+
+            .secao-hotel {
+                width: 100%;
+                padding: 5px; /* Ajustado padding para dar mais espaço */
+            }
+
+            .resultados table {
+                font-size: 12px;
+                width: 100%; /* Garante que a tabela ocupe todo o espaço */
+            }
+
+            .resultados th, 
+            .resultados td {
+                padding: 8px 6px; /* Aumentado um pouco o padding */
+            }
+
+            #summary {
+                padding: 5px;
+                font-size: 14px;
+                width: 100%; /* Garante largura total para o sumário */
+            }
+
+            /* Mantém os outros estilos de scrollbar e indicadores visuais... */
+            .resultados::-webkit-scrollbar {
+                height: 4px;
+            }
+
+            .resultados::-webkit-scrollbar-track {
+                background: rgba(255, 255, 255, 0.1);
+            }
+
+            .resultados::-webkit-scrollbar-thumb {
+                background: #e59513;
+                border-radius: 2px;
+            }
+
+            .resultados::after {
+                content: '';
+                position: absolute;
+                right: 0;
+                top: 0;
+                bottom: 0;
+                width: 20px;
+                background: linear-gradient(to right, transparent, rgba(0,0,0,0.1));
+                pointer-events: none;
+                opacity: 0.8;
+            }
+
+            /* Ajusta botões em mobile */
+            .secao-hotel button {
+                width: 80%; /* Aumentado de 80% para 90% */
+                margin: 10px auto;
+                padding: 12px 20px;
+                font-size: 16px;
+            }
+
+            #summary p strong {
+                display: inline-block;
+                margin-bottom: 5px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                height: auto;
+            }
+
+            header img {
+                width: 125px;
+                margin-right: 5px;
+            }
+            header{
+                margin-top: 5px;
+            }
+            header .data-hora {
+                font-size: 9px;
+                color: #b0b1b3;
+            }
+            header h3 {
+                font-size: 12px;
+                color: #b0b1b3;
+            }
+
+
+            footer {
+                font-size: 12px;
+            }
+
+        
+            .add-icon-container {
+                bottom: 10px;
+                right: 15px;
+                
+            }
+
+            section {
+                background: none;
+                width: 90%;
+
+            }
+        }
+
+
+        footer {
+            text-align: center;
+            padding: 10px;
+            background-color: transparent;
+            color: #c4c4c4;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            font-size: 14px;
+        }
+
+        footer a {
+            color: #00b5e2;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+
+        /* Suport */
+        .add-icon-container {
+            z-index: 1000;
+            position: fixed;
+            bottom: 15px;
+            right: 15px;
+            background-color: #25D366;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            transition: 0.4s;
+            font-weight: 100;
+        }
+        .add-icon-container:hover{
+            background-color: #13a247;
+        }
+
+        .add-icon-container a {
+            color: white;
+            justify-content: center;
+            align-content: center;
+            font-size: 40px;
+            display: flex;
+            text-decoration: none;
+            position: relative;
+            left: 5px;
+            top: 5px;
+            font-weight: 100;
+        }
+
+        /* Estilo para a descrição */
+        .descricao {
+            position: absolute;
+            bottom: 35px; /* Aumente ou diminua conforme necessário */
+            left: -150px;
+            transform: translateX(-50%);
+            background-color: var(--primary-color);
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: 400;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+            white-space: nowrap; /* Impede que o texto quebre */
+        }
+
+        /* Mostrar a descrição quando o cursor passar sobre o link */
+        .add-icon-container:hover .descricao {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+
+            header {
+                height: 60px; /* Smaller header height on mobile */
+                margin-top: 5px;
+            }
+
+            header img {
+                width: 105px;
+                margin-right: 5px;
+            }
+
+            header .data-hora {
+                font-size: 10px;
+                color: #b0b1b3;
+            }
+            header h3 {
+                font-size: 12px;
+                color: #b0b1b3;
+            }
+
+
+            .menu-button {
+                width: 320px;
+                height: 100px;
+                margin: 25px;
+                /* padding: 55px; */
+                justify-content: center;
+                justify-items: center;
+                align-items: center;
+                align-content: center;
+                
+            }
+
+            .menu-button i {
+                font-size: 2.5em;
+            }
+
+            .menu-button span {
+                font-size: 1em;
+            }
+
+            .submenu {
+                min-width: 200px;
+            }
+
+
+            .add-icon-container {
+                bottom: 50px;
+                right: 15px;
+
+            }
+
+            .main-section {
+                display: block;
+                justify-content: center;
+                align-items: center;
+                align-content: center;
+                justify-items: center;
+                gap: 10px;
+                width: 95%;
+                margin-top: 100px;
+            }
+
+            .calculadora {
+                width: 100%;
+                margin-bottom: 50px;
+            }
+
+            footer {
+                font-size: 10px;
+            }     
+            
+        }
+
+    </style>
+  </head>
+
+  <body>
+    <!-- Header original completo -->
+    <header>
+      <a href="home.html"><img id="logoAHI" src="static/img/logo_ahi.png" alt="Logo AHI"/></a>
+      <div> 
+        <h3 id="saudacao"></h3>
+        <p class="data-hora" id="dataHora"></p>
+      </div>
+      <div id="legenda">
+          <div id="goback-btn"><a href="home.html"><h4><span class="invertido">➥</span> Voltar</h4></a></div>
+      </div>
+    </header>
+
+    <div class="infoabove" id="infoabove">
+        <input type="text" id="cliente" name="cliente" placeholder="Nome da Empresa/cliente">
+        <input type="datetime-local" id="chkn" name="checkin" placeholder="Data Check-in">
+        <input type="datetime-local" id="chkout" name="checkout" placeholder="Data Check-out">
+        <input type="date" id="ddline" name="deadline" placeholder="Deadline">
+
+        <select id="hotel" name="hotel">
+            <option value="hotelA">Selecione um hotel</option>
+            <option value="EMC">[EMC] Esuites Minascasa</option>
+            <option value="RAH">[RAH] Ramada Airport Lagoa Santa</option>
+            <option value="ESLS">[ESLS] eSuites SPA Lagoa Santa</option>
+            <option value="GTIM">[GTIM] Go Inn Betim</option>
+            <option value="GCTG">[GCTG] Go Inn Contagem</option>
+            <option value="TFLF">[TFLF] Transamerica Fit Lafaiete</option>
+            <option value="COSC">[COSC] Comfort Serra da Canastra</option>
+            <option value="TEBH">[TEBH] Transamerica Executive Belo Horizonte</option>
+            <option value="TBHL">[TBHL] Transamerica Belo Horizonte Lourdes</option>
+            <option value="ESST">[ESST] eSuites Savassi Toscanini</option>
+            <option value="HGBH">[HGBH] Hilton Garden Inn Belo Horizonte</option>
+            <option value="RBHL">[RBHL] Radisson Blu Belo Horizonte Savassi</option>
+            <option value="LUX">[LUX] eSuites Virginia Luxemburgo</option>
+            <option value="TLI">[TLI] Transamerica Lagoa dos Ingleses</option>
+        </select>
+
+    </div>
+
+        <br>
+
+    <main class="main-section">
+
+        <!-- Calculadora de grupo hotel -->
+        <div class="secao-hotel">
+            <h2>Cotação de Grupo</h2>
+            
+            <div class="configuracoes">
+                <h4>Valor das Diárias</h4>
+                <input type="text" id="price-single" placeholder="Single" oninput="formatCurrency(this)">
+                <input type="text" id="price-double" placeholder="Double" oninput="formatCurrency(this)">
+                <input type="text" id="price-triple" placeholder="Triple" oninput="formatCurrency(this)">
+                <h6>Tarifa comissionada?<input type="checkbox" id="checkbox" placeholder="Tarifa comissionada?"></h6>
+                <input style="display: none;" type="text" id="iss-tax" placeholder="ISS (%)" oninput="formatPercent(this)">
+            </div>
+            
+            
+            <div class="quartos">
+                <h4>Quantidade de Apartamentos</h4>
+                <input type="number" id="single" placeholder="Single">
+                <input type="number" id="double" placeholder="Double">
+                <input type="number" id="triple" placeholder="Triple">  
+                <input style="display: none;" type="number" id="nights" placeholder="Nº de Noites">
+            </div>                       
+
+            <button id="calculate-btn">Calcular</button>
+
+            <div class="resultados" id="results">
+                <h3>Resultados</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th id="quina1">Tipo</th>
+                            <th>Quantidade</th>
+                            <th>Capacidade</th>
+                            <th>Valor Diária</th>
+                            <th id="quina2">Valor Total</th>
+                        </tr>
+                    </thead>
+                    <tbody id="results-body"></tbody>
+                </table>
+                <div id="summary"></div>
+                <button id="save-pdf-btn">Salvar PDF</button>
+            </div>
+        </div>
+        <!-- /Calculadora de grupo hotel -->
+
+        <!-- Calculadora -->
+        <div class="calculadora">
+            <div id="calculadoraDisplay" class="calculadora-display">0</div>
+            <div class="calculadora-buttons">
+            <button class="calculadora-button" onclick="adicionarNumero('7')">7</button>
+            <button class="calculadora-button" onclick="adicionarNumero('8')">8</button>
+            <button class="calculadora-button" onclick="adicionarNumero('9')">9</button>
+            <button id="opp" class="calculadora-button" onclick="operacao('+')">+</button>
+    
+            <button class="calculadora-button" onclick="adicionarNumero('4')">4</button>
+            <button class="calculadora-button" onclick="adicionarNumero('5')">5</button>
+            <button class="calculadora-button" onclick="adicionarNumero('6')">6</button>
+            <button id="opp" class="calculadora-button" onclick="operacao('-')">-</button>
+    
+            <button class="calculadora-button" onclick="adicionarNumero('1')">1</button>
+            <button class="calculadora-button" onclick="adicionarNumero('2')">2</button>
+            <button class="calculadora-button" onclick="adicionarNumero('3')">3</button>
+            <button id="opp" class="calculadora-button" onclick="operacao('*')">*</button>
+    
+            <button class="calculadora-button" onclick="adicionarNumero('0')">0</button>
+            <button id="opp1" class="calculadora-button" onclick="calcularResultado()">=</button>
+            <button id="opp" class="calculadora-button" onclick="limpar()">⌫</button>
+            <button id="opp" class="calculadora-button" onclick="operacao('/')">÷</button>
+            </div><br>
+        </div>
+        <!-- /Calculadora -->
+
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; <span id="anoAtual"></span> AHI WebApp | Cluster MG - BHZ.</p>
+    </footer>
+    <!-- /Footer -->
+    
+    <div class="add-icon-container">
+        <a href="https://wa.me/5511918636360" target="blank"><i id="support" class='bx bxl-whatsapp'></i></a>
+        <div class="descricao">Em caso de dúvida, chama no WhatsApp!</div>
+    </div>
+
+    <!-- Script Calculadora simples -->
+    <script>
+
+      function obterSaudacao() {
+            const agora = new Date();
+            const hora = agora.getHours(); // Obtém a hora atual (de 0 a 23)
+
+            let saudacao = "";
+            
+            if (hora >= 6 && hora < 12) {
+                saudacao = "Olá, Bom dia! Seja bem-vindo(a)!";
+            } else if (hora >= 12 && hora < 18) {
+                saudacao = "Olá, Boa tarde! Seja bem-vindo(a)!";
+            } else {
+                saudacao = "Olá, Boa noite! Seja bem-vindo(a)!";
+            }
+
+            return saudacao;
+        }
+
+        // Exibe a saudação no elemento com o id "saudacao"
+        document.getElementById("saudacao").textContent = obterSaudacao();
+
+
+        function updateDataHora() {
+        const data = new Date();
+        const options = {
+            weekday: "long",
+            day: "numeric",
+            month: "long",
+            year: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+        };
+        const dataHoraFormatada = data.toLocaleString("pt-BR", options);
+        document.getElementById("dataHora").textContent = dataHoraFormatada;
+        }
+
+        setInterval(updateDataHora, 1000);
+
+
+        // Responsive logo
+        window.addEventListener("load", function () {
+            let logo = document.getElementById("logoAHI");
+
+            function atualizarLogo() {
+                if (window.innerWidth <= 768) {
+                    logo.src = "static/img/ahi_logo_mobile.png";
+                } else {
+                    logo.src = "static/img/logo_ahi.png";
+                }
+            }
+
+            atualizarLogo(); // Atualiza ao carregar a página
+            window.addEventListener("resize", atualizarLogo); // Atualiza ao redimensionar a tela
+        });
+
+            document.addEventListener("DOMContentLoaded", function () {
+            document.getElementById("anoAtual").textContent = new Date().getFullYear();
+        });
+
+
+
+            document.addEventListener('DOMContentLoaded', function() {
+                // Close submenus when clicking outside
+                document.addEventListener('click', function(e) {
+                    const menus = document.querySelectorAll('.menu-item');
+                    menus.forEach(menu => {
+                        if (!menu.contains(e.target)) {
+                            const submenu = menu.querySelector('.submenu');
+                            if (submenu) {
+                                submenu.style.opacity = '0';
+                                submenu.style.visibility = 'hidden';
+                                submenu.style.marginTop = '10px';
+                            }
+                        }
+                    });
+                });
+            });
+
+
+            document.addEventListener('DOMContentLoaded', function() {
+                // Add 'has-submenu' class to menu buttons that have submenus
+                document.querySelectorAll('.menu-item').forEach(item => {
+                    const submenu = item.querySelector('.submenu');
+                    const button = item.querySelector('.menu-button');
+                    if (submenu) {
+                        button.classList.add('has-submenu');
+                    }
+                });
+
+                // Handle menu item clicks
+                document.querySelectorAll('.menu-button').forEach(button => {
+                    button.addEventListener('click', function(e) {
+                        if (this.classList.contains('has-submenu')) {
+                            e.preventDefault();
+                            
+                            // Remove active class from all other menu items
+                            document.querySelectorAll('.menu-button').forEach(btn => {
+                                if (btn !== this) {
+                                    btn.classList.remove('active');
+                                }
+                            });
+
+                            // Toggle active class on clicked item
+                            this.classList.toggle('active');
+                        }
+                    });
+                });
+
+                // Close submenus when clicking outside
+                document.addEventListener('click', function(e) {
+                    const menus = document.querySelectorAll('.menu-item');
+                    menus.forEach(menu => {
+                        if (!menu.contains(e.target)) {
+                            const submenu = menu.querySelector('.submenu');
+                            const button = menu.querySelector('.menu-button');
+                            if (submenu) {
+                                submenu.style.opacity = '0';
+                                submenu.style.visibility = 'hidden';
+                                button.classList.remove('active');
+                            }
+                        }
+                    });
+                });
+
+                // Handle mobile submenu positioning
+                function adjustSubmenuPosition() {
+                    if (window.innerWidth <= 768) {
+                        document.querySelectorAll('.submenu').forEach(submenu => {
+                            const menuItem = submenu.closest('.menu-item');
+                            const button = menuItem.querySelector('.menu-button');
+                            
+                            menuItem.addEventListener('mouseenter', () => {
+                                const buttonRect = button.getBoundingClientRect();
+                                const viewportHeight = window.innerHeight;
+                                const submenuHeight = submenu.offsetHeight;
+                                
+                                if (buttonRect.bottom + submenuHeight > viewportHeight) {
+                                    submenu.style.bottom = '100px';
+                                } else {
+                                    submenu.style.bottom = 'auto';
+                                }
+                            });
+                        });
+                    }
+                }
+
+                // Call on load and resize
+                adjustSubmenuPosition();
+                window.addEventListener('resize', adjustSubmenuPosition);
+            });
+
+        // Lógica da Calculadora
+        let display = document.getElementById('calculadoraDisplay');
+        let operacaoAtual = '';
+        let operacaoAnterior = '';
+        let resultado = '';
+
+        function adicionarNumero(numero) {
+            // Se o display tiver apenas 0, substitui
+            if (display.textContent === '0') {
+                display.textContent = numero;
+            } else {
+                display.textContent += numero;
+            }
+        }
+
+        function operacao(operador) {
+            // Se já houver operação em andamento, faz o cálculo e exibe o resultado
+            if (operacaoAtual !== '') {
+                calcularResultado();
+            }
+            
+            // Armazena o número atual antes de adicionar o operador
+            operacaoAnterior = display.textContent;
+            operacaoAtual = operador;
+            display.textContent += operador; // Exibe o operador na tela
+        }
+
+        function calcularResultado() {
+            if (operacaoAtual === '') return;
+
+            // Avalia a expressão no formato "operacaoAnterior operacao display.textContent"
+            resultado = eval(operacaoAnterior + operacaoAtual + display.textContent.split(operacaoAtual)[1]);
+            display.textContent = resultado;
+            operacaoAtual = ''; // Limpa a operação
+            operacaoAnterior = ''; // Limpa o número anterior
+        }
+
+        function limpar() {
+            display.textContent = '0';
+            operacaoAtual = '';
+            operacaoAnterior = '';
+        }
+
+        function formatCurrency(input) {
+            let value = input.value.replace(/\D/g, ""); // Remove tudo que não for número
+            value = (value / 100).toFixed(2); // Converte para decimal
+            value = value.replace(".", ","); // Substitui ponto por vírgula
+            input.value = "R$ " + value; // Adiciona "R$" no início
+        }
+
+        function formatPercent(input) {
+            let value = input.value.replace(/\D/g, ""); // Remove tudo que não for número
+            input.value = value + "%"; // Adiciona "%" no final
+        }
+
+
+    </script>
+    <!-- /Script Calculadora simples -->
+
+    <!-- Scripts da calculadora de Grupos -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+
+    <!-- /Scripts da calculadora de Grupos -->
+    <script>
+        const taxasISS = {
+            "TLI": 0.03,
+            "TFLF": 0.04,
+            "EMC": 0.05,
+            "TEBH": 0.05,
+            "TBHL": 0.05,
+            "ESST": 0.05,
+            "HGBH": 0.05,
+            "RBHL": 0.05,
+            "LUX": 0.05,
+            "RAH": 0.03,
+            "ESLS": 0.03,
+            "GCTG": 0.025,
+            "GTIM": 0.038,
+            "COSC": 0.03
+        };
+
+        // Primeiro, ajustamos o objeto de logos para ter os caminhos corretos
+        const logosHoteis = {
+            "EMC": "static/img/logo/esuites.png",
+            "RAH": "static/img/logo/ramada.png",
+            "ESLS": "static/img/logo/esuites.png",
+            "GTIM": "static/img/logo/goinn.png",
+            "GCTG": "static/img/logo/goinn.png",
+            "TFLF": "static/img/logo/tfit.png",
+            "COSC": "static/img/logo/comfort.png",
+            "TEBH": "static/img/logo/texecutive.png",
+            "TBHL": "static/img/logo/transamerica.png",
+            "ESST": "static/img/logo/esuites.png",
+            "HGBH": "static/img/logo/hilton.png",
+            "RBHL": "static/img/logo/radisson.png",
+            "LUX": "static/img/logo/esuites.png",
+            "TLI": "static/img/logo/transamerica.png"
+        };
+
+        // Função auxiliar para carregar imagem como base64
+        async function loadImageAsBase64(url) {
+            try {
+                const response = await fetch(url);
+                const blob = await response.blob();
+                return new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.onloadend = () => resolve(reader.result);
+                    reader.onerror = reject;
+                    reader.readAsDataURL(blob);
+                });
+            } catch (error) {
+                console.error("Erro ao carregar imagem:", error);
+                throw error;
+            }
+        }
+
+        // Função para adicionar logo ao PDF
+        async function adicionarLogoAoPDF(doc, hotelSelecionado) {
+            try {
+                const logoPath = logosHoteis[hotelSelecionado];
+                if (!logoPath) {
+                    console.warn("Logo não encontrado para o hotel:", hotelSelecionado);
+                    return;
+                }
+
+                const base64Logo = await loadImageAsBase64(logoPath);
+                if (base64Logo) {
+                    // Posiciona o logo no topo da página, abaixo do cabeçalho
+                    doc.addImage(base64Logo, 'PNG', 160, 25, 50, 16);
+                }
+            } catch (error) {
+                console.error("Erro ao adicionar logo ao PDF:", error);
+            }
+        }
+
+        // Modificação no event listener do botão de salvar PDF
+        document.getElementById("save-pdf-btn").addEventListener("click", async () => {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            const hotelSelecionado = document.getElementById("hotel").value;
+
+            // Mapeamento das siglas para os nomes completos
+            const hotelMap = {
+                "EMC": "[EMC] Esuites Minascasa",
+                "RAH": "[RAH] Ramada Airport Lagoa Santa",
+                "ESLS": "[ESLS] eSuites SPA Lagoa Santa",
+                "GTIM": "[GTIM] Go Inn Betim",
+                "GCTG": "[GCTG] Go Inn Contagem",
+                "TFLF": "[TFLF] Transamerica Fit Lafaiete",
+                "COSC": "[COSC] Comfort Serra da Canastra",
+                "TEBH": "[TEBH] Transamerica Executive Belo Horizonte",
+                "TBHL": "[TBHL] Transamerica Belo Horizonte Lourdes",
+                "ESST": "[ESST] eSuites Savassi Toscanini",
+                "HGBH": "[HGBH] Hilton Garden Inn Belo Horizonte",
+                "RBHL": "[RBHL] Radisson Blu Belo Horizonte Savassi",
+                "LUX": "[LUX] eSuites Virginia Luxemburgo",
+                "TLI": "[TLI] Transamerica Lagoa dos Ingleses"
+            };
+
+            // Pega o nome completo do hotel baseado na sigla
+            const nomeCompletoHotel = hotelMap[hotelSelecionado] || "Hotel não selecionado"; // Valor padrão se não encontrado
+
+            // Remove a sigla entre colchetes
+            const nomeDoHotel = nomeCompletoHotel.replace(/^\[.*?\]\s*/, '').trim();
+
+            // Adicionar cabeçalho, rodapé e gerar PDF (restante do código continua...)
+            try {
+                const headerImg = await loadImageAsBase64("static/img/header.png");
+                const footerImg = await loadImageAsBase64("static/img/footer.png");
+
+                doc.addImage(headerImg, "PNG", 0, 0, 210, 20);
+                await adicionarLogoAoPDF(doc, hotelSelecionado);
+
+                // Adicionar data
+                const currentDate = formatDate(new Date());
+                doc.setTextColor(169, 169, 169);
+                doc.setFontSize(10);
+                doc.setFont("helvetica");
+                doc.text(currentDate, 165, 18);
+            
+                // Dados de inputs
+                const clienteName = document.getElementById("cliente").value || "[Nome do Cliente]";
+                const checkin = formatDateFromInput(document.getElementById("chkn").value);
+                const checkout = formatDateFromInput(document.getElementById("chkout").value);
+                const deadline = formatDateFromInput(document.getElementById("ddline").value);
+
+                // Adicionar título
+                doc.setTextColor(35, 51, 67);
+                doc.setFontSize(25); // Fonte maior
+                doc.setFont("helvetica", "bold");
+                doc.text("Proposta Comercial", 105, 35, { align: "center" });
+
+                // Adicionar nome do hotel
+                doc.setTextColor(35, 51, 67);
+                doc.setFontSize(10);
+                doc.setFont("helvetica", "normal");
+                doc.text(nomeDoHotel, 105, 42, { align: "center" });
+   
+                // Texto inicial
+                let yPos = 55; // Ajustado posição inicial
+                const lineHeight = 6;
+    
+                doc.setFont("helvetica", "normal");
+                doc.setFontSize(12);
+                doc.setTextColor(0, 0, 0);
+    
+                // Nome do cliente
+                doc.text(`À ${clienteName},`, 20, yPos);
+                yPos += lineHeight * 3; // Espaço de 3 linhas após o nome do cliente
+    
+                // Prezados
+                doc.text("Prezados,", 20, yPos);
+                yPos += lineHeight * 2; // Espaço de 2 linhas após o "Prezados"
+    
+                // Textos justificados
+                doc.setFont("helvetica", "normal");
+    
+                // Texto de apresentação com quebra automática de linha e justificado
+                const apresentacao = "Agradecemos pela oportunidade de negociação e preferência em nossos hotéis. Será um prazer atendê-los!";
+                const linhasApresentacao = doc.splitTextToSize(apresentacao, 170);
+                doc.text(linhasApresentacao, 20, yPos, { align: 'justify', maxWidth: 170 });
+                yPos += lineHeight * 2;
+    
+                const atlantica = "A Atlantica Hotels é hoje a maior administradora hoteleira multimarca independente, da América do Sul, atuando nas categorias de hotéis budget à luxo, de norte a sul do Brasil.";
+                const linhasAtlantica = doc.splitTextToSize(atlantica, 170);
+                doc.text(linhasAtlantica, 20, yPos, { align: 'justify', maxWidth: 170 });
+                yPos += lineHeight * 2;
+    
+                // Período com datas em negrito
+                doc.setFont("helvetica", "normal");
+                const periodoInicio = "Confirmamos disponibilidade para o período de ";
+                const periodoFim = " à ";
+                const periodoFinal = ", até o momento.";
+                yPos += lineHeight * 1;
+    
+                let xPos = 20;
+                doc.text(periodoInicio, xPos, yPos);
+                xPos += doc.getTextWidth(periodoInicio);
+    
+                doc.setFont("helvetica", "bold");
+                doc.text(checkin, xPos, yPos);
+                xPos += doc.getTextWidth(checkin);
+    
+                doc.setFont("helvetica", "normal");
+                doc.text(periodoFim, xPos, yPos);
+                xPos += doc.getTextWidth(periodoFim);
+    
+                doc.setFont("helvetica", "bold");
+                doc.text(checkout, xPos, yPos);
+                xPos += doc.getTextWidth(checkout);
+    
+                doc.setFont("helvetica", "normal");
+                doc.text(periodoFinal, xPos, yPos);
+    
+                yPos += lineHeight * 2;
+    
+                doc.text("Segue abaixo nossa proposta:", 20, yPos);
+                yPos += lineHeight;
+    
+                // Adicionar tabela
+                const headers = [["Tipo", "Quantidade", "Capacidade", "Diária", "Total"]];
+                const data = [];
+
+                document.querySelectorAll("#results-body tr").forEach((row) => {
+                    const cols = row.querySelectorAll("td");
+                    let capacidade = parseInt(cols[2].textContent) || 0; // Obtém o número da capacidade
+                    let hospedesText = capacidade === 1 ? " hóspede" : " hóspedes"; // Define singular ou plural
+                    let capacidadeFormatada = capacidade + hospedesText; // Formata o texto final
+
+                    // Substitui apenas a capacidade pelo formato adequado
+                    data.push([
+                        cols[0].textContent,  // Tipo
+                        cols[1].textContent,  // Quantidade
+                        capacidadeFormatada,  // Capacidade formatada com hóspede/hóspedes
+                        cols[3].textContent,  // Diária
+                        cols[4].textContent   // Total
+                    ]);
+                });
+
+                doc.autoTable({
+                    head: [["Tipo", "Quantidade", "Capacidade", "Diária", "Total"]],
+                    body: data,
+                    startY: yPos,
+                    theme: "grid",
+                    styles: { 
+                        fontSize: 10,
+                        font: "helvetica",
+                        cellPadding: 2 
+                    },
+                    headStyles: { 
+                        fillColor: [35, 51, 67], // Dark blue for header
+                        font: "helvetica",
+                        textColor: [255, 255, 255] // White text
+                    },
+                    alternateRowStyles: {
+                        fillColor: [230, 230, 230] // Light gray background for alternate rows
+                    },
+                    rowStyles: {
+                        fillColor: [255, 255, 255] // White background for normal rows
+                    }
+                });
+
+
+                // Verificar early check-in e late check-out
+                const checkinTime = document.getElementById("chkn").value.split("T")[1] || "14:00";
+                const checkoutTime = document.getElementById("chkout").value.split("T")[1] || "12:00";
+
+                let earlyCheckinCost = 0;
+                let lateCheckoutCost = 0;
+
+                if (checkinTime < "14:00") {
+                    earlyCheckinCost = dailyTotal;
+                }
+                if (checkoutTime > "12:00") {
+                    lateCheckoutCost = dailyTotal;
+                }
+
+                const totalExtras = earlyCheckinCost + lateCheckoutCost;
+                const totalFinal = grandTotal + totalExtras;
+
+
+                // Adicionar resumo financeiro
+                yPos = doc.lastAutoTable.finalY + 5;
+                yPos += lineHeight * 1;
+                
+                const summary = document.getElementById("summary").innerText.split("\n");
+                summary.forEach((line) => {
+                    const parts = line.split(":"); // Split title and value
+                    if (parts.length === 2) {
+                        doc.setFont("helvetica", "bold");
+                        doc.text(parts[0] + ":", 20, yPos); // Bold title
+                        doc.setFont("helvetica", "normal");
+                        doc.text(parts[1], 60, yPos); // Normal value
+                    } else {
+                        doc.setFont("helvetica", "normal");
+                        doc.text(line, 20, yPos);
+                    }
+                    yPos += 3;
+                });
+
+    
+                // Adicionar informações adicionais
+                yPos += lineHeight * 2;
+                doc.setFont("helvetica", "bold");
+                doc.text("Informações adicionais:", 20, yPos);
+                yPos += lineHeight * 1;
+
+                doc.setFont("helvetica", "normal");
+                // Verifica se o checkbox está marcado para definir o tipo de tarifa
+                const tipoTarifa = document.getElementById("checkbox").checked ? "Tarifa comissionada;" : "Tarifa NET;";
+
+                // Atualiza a lista de informações no PDF
+                const informacoes = [
+                    `• ${tipoTarifa}`,
+                    "• Café da manhã e internet inclusos;",
+                    "• Check-in às 14h00 / Check-out às 12h00;",
+                    "• O percentual do ISS foi acrescentado ao valor final;"
+                ];
+
+                // Adiciona as informações ao PDF
+                informacoes.forEach(info => {
+                    doc.text(info, 20, yPos);
+                    yPos += 5;
+                });
+
+                // Parte com negrito específico
+                const infoComNegrito = "• Bloqueio de apartamentos em sistema são feitos apenas após assinatura de contrato.";
+
+                // Dividir a frase em duas partes, para colocar em negrito as partes desejadas
+                const parteNegrito1 = "• Bloqueio de apartamentos";
+                const parteNormal = " em sistema são feitos apenas após ";
+                const parteNegrito2 = "assinatura de contrato.";
+
+                // Primeira parte em negrito
+                doc.setFont("helvetica", "bold");
+                doc.text(parteNegrito1, 20, yPos);
+
+                // Volta para o estilo normal
+                doc.setFont("helvetica", "normal");
+                doc.text(parteNormal, 24 + doc.getTextWidth(parteNegrito1), yPos);
+
+                // Segunda parte em negrito
+                doc.setFont("helvetica", "bold");
+                doc.text(parteNegrito2, 16 + doc.getTextWidth(parteNegrito1 + parteNormal), yPos);
+
+                // Atualiza a posição vertical (yPos)
+                yPos += 5;
+
+    
+                yPos += lineHeight;
+                // Deadline com data em negrito
+                doc.setFont("helvetica", "normal");
+                const deadlineTexto = "Proposta válida até ";
+                let xPosDeadline = 20;
+    
+                doc.text(deadlineTexto, xPosDeadline, yPos);
+                xPosDeadline += doc.getTextWidth(deadlineTexto);
+    
+                doc.setFont("helvetica", "bold");
+                doc.text(deadline + ".", xPosDeadline, yPos);
+
+                // Adicionar rodapé
+                doc.addImage(footerImg, "PNG", 0, 285, 210, 12);
+
+                // Salvar PDF
+                doc.save("proposta-comercial.pdf");
+            } catch (error) {
+                console.error("Erro ao gerar PDF:", error);
+                alert("Erro ao gerar o PDF. Por favor, verifique se todas as imagens estão disponíveis e tente novamente.");
+            }
+        });
+
+        // Declarar variáveis globalmente
+        let dailyTotal = 0;
+        let grandTotal = 0;
+        let totalStay = 0;
+
+    
+        // Função para calcular o número de noites entre duas datas
+        function calculateNights(checkin, checkout) {
+            if (!checkin || !checkout) return 1;
+            
+            // Criar objetos Date a partir das strings de datetime-local
+            const checkinDate = new Date(checkin);
+            const checkoutDate = new Date(checkout);
+            
+            // Ajusta o horário para garantir que contamos o dia inteiro de check-out, mas sem adicionar um dia extra
+            checkoutDate.setHours(23, 59, 59, 999);  // Não precisamos alterar o horário do checkin
+            
+            // Calcular a diferença em milissegundos
+            const diffTime = checkoutDate - checkinDate;
+            
+            // Converter para dias
+            const diffDays = diffTime / (1000 * 60 * 60 * 24);
+            
+            // Como a hotelaria conta diárias, excluímos o último dia do cálculo
+            return Math.max(Math.floor(diffDays), 1);
+        }
+
+
+
+
+        // Modificar o event listener do botão calculate
+        document.getElementById("calculate-btn").addEventListener("click", () => {
+            const hotelSelecionado = document.getElementById("hotel").value;
+            const issTax = taxasISS[hotelSelecionado] || 0;
+            const logoPath = logosHoteis[hotelSelecionado] || "";
+
+            if (logoPath) {
+                document.getElementById("hotel-logo").src = logoPath;
+                document.getElementById("hotel-logo").style.display = "block";
+            } else {
+                document.getElementById("hotel-logo").style.display = "none";
+            }
+
+            const priceSingle = getNumericValue("price-single");
+            const priceDouble = getNumericValue("price-double");
+            const priceTriple = getNumericValue("price-triple");
+
+            const singleRooms = parseInt(document.getElementById("single").value) || 0;
+            const doubleRooms = parseInt(document.getElementById("double").value) || 0;
+            const tripleRooms = parseInt(document.getElementById("triple").value) || 0;
+            
+            // Calcular noites automaticamente
+            const checkinDateTime = document.getElementById("chkn").value;
+            const checkoutDateTime = document.getElementById("chkout").value;
+            const nights = calculateNights(checkinDateTime, checkoutDateTime);
+
+            const totalSingle = singleRooms * priceSingle;
+            const totalDouble = doubleRooms * priceDouble;
+            const totalTriple = tripleRooms * priceTriple;
+            dailyTotal = totalSingle + totalDouble + totalTriple;
+            totalStay = dailyTotal * nights;
+
+            // Verificar early check-in e late check-out
+            const checkinTime = checkinDateTime.split("T")[1] || "14:00";
+            const checkoutTime = checkoutDateTime.split("T")[1] || "12:00";
+
+            let earlyCheckinCost = 0;
+            let lateCheckoutCost = 0;
+
+            if (checkinTime < "14:00") {
+                earlyCheckinCost = dailyTotal;
+            }
+            if (checkoutTime > "12:00") {
+                lateCheckoutCost = dailyTotal;
+            }
+
+            const totalExtras = earlyCheckinCost + lateCheckoutCost;
+            totalStay += totalExtras;
+
+            const taxISS = totalStay * issTax;
+            grandTotal = totalStay + taxISS;
+
+            document.getElementById("results-body").innerHTML = `
+                <tr><td>Single</td><td>${singleRooms}</td><td>${singleRooms}</td><td>R$ ${priceSingle.toFixed(2)}</td><td>R$ ${totalSingle.toFixed(2)}</td></tr>
+                <tr><td>Double</td><td>${doubleRooms}</td><td>${doubleRooms * 2}</td><td>R$ ${priceDouble.toFixed(2)}</td><td>R$ ${totalDouble.toFixed(2)}</td></tr>
+                <tr><td>Triple</td><td>${tripleRooms}</td><td>${tripleRooms * 3}</td><td>R$ ${priceTriple.toFixed(2)}</td><td>R$ ${totalTriple.toFixed(2)}</td></tr>
+            `;
+
+            document.getElementById("summary").innerHTML = `
+                <p><strong>Subtotal (diária):</strong> R$ ${dailyTotal.toFixed(2)}</p>
+                <p><strong>Subtotal (${nights} noites):</strong> R$ ${(dailyTotal * nights).toFixed(2)}</p>
+                <p><strong>Early Check-in:</strong> R$ ${earlyCheckinCost.toFixed(2)}</p>
+                <p><strong>Late Check-out:</strong> R$ ${lateCheckoutCost.toFixed(2)}</p>
+                <p><strong>Total de extras:</strong> R$ ${totalExtras.toFixed(2)}</p>
+                <p><strong>ISS (${(issTax * 100).toFixed(2)}%):</strong> R$ ${taxISS.toFixed(2)}</p>
+                <p><strong>Total Geral:</strong> R$ ${grandTotal.toFixed(2)}</p>
+            `;
+        });
+    
+    
+        // Função auxiliar para formatar data do input
+        function formatDateFromInput(dateString) {
+            if (!dateString) return "[Data não informada]";
+
+            // Para o tipo 'datetime-local', remove a parte da hora se for presente
+            if (dateString.includes('T')) {
+                dateString = dateString.split('T')[0]; // Pega apenas a data (yyyy-mm-dd)
+            }
+
+            // Dividindo a data no formato yyyy-mm-dd
+            const [year, month, day] = dateString.split('-');
+            
+            // Verificando se a data tem o formato correto
+            if (!day || !month || !year) {
+                return "[Data inválida]";
+            }
+
+            // Criando um novo objeto Date com o formato correto
+            const date = new Date(year, month - 1, day); // Meses começam do 0 (0-11)
+
+            // Verificando se a data foi criada corretamente
+            if (isNaN(date.getTime())) {
+                return "[Data inválida]";
+            }
+
+            // Formatando a data para o formato dd/mm/yyyy
+            const dia = date.getDate().toString().padStart(2, '0');
+            const mes = (date.getMonth() + 1).toString().padStart(2, '0');
+            const ano = date.getFullYear();
+
+            return `${dia}/${mes}/${ano}`;
+        }
+    
+        // Função para carregar imagem
+        function loadImage(url) {
+            return new Promise((resolve, reject) => {
+                const img = new Image();
+                img.onload = () => resolve(img);
+                img.onerror = () => {
+                    console.error(`Erro ao carregar a imagem: ${url}`);
+                    reject(new Error(`Imagem não encontrada ou inacessível: ${url}`));
+                };
+                img.src = url;
+            });
+        }
+    
+        // Função para formatar a data no formato "22 de novembro de 2024"
+        function formatDate(date) {
+            const months = [
+                "janeiro", "fevereiro", "março", "abril", "maio", "junho", 
+                "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"
+            ];
+            const day = date.getDate();
+            const month = months[date.getMonth()];
+            const year = date.getFullYear();
+            return `${day} de ${month} de ${year}`;
+        }
+    
+        function getNumericValue(inputId) {
+            let value = document.getElementById(inputId).value;
+            return parseFloat(value.replace("R$", "").replace(",", ".").trim()) || 0;
+        }
+
+    </script>
+    <!-- /Scripts da calculadora de Grupos -->
+    <div class="divimg">
+        <img id="hotel-logo" src="" alt="Logo do Hotel" style="display:none; width:150px; margin-top:10px;">
+    </div>     
+    
+    
+  </body>
+</html>
