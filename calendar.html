@@ -1186,13 +1186,23 @@
                 return;
             }
 
-            var tooltipSpan = document.createElement("span");
-            tooltipSpan.className = "tooltip";
-            tooltipSpan.innerHTML = eventDescription;
-
+            // 🔹 Verifica se já existe um tooltip no dia
+            var existingTooltip = targetDayElement.querySelector(".tooltip");
+            
+            if (existingTooltip) {
+                // 🔹 Se já existir um tooltip, adicionamos o evento nele
+                existingTooltip.innerHTML += "<br>" + eventDescription;
+            } else {
+                // 🔹 Se não existir, criamos um novo tooltip
+                var tooltipSpan = document.createElement("span");
+                tooltipSpan.className = "tooltip";
+                tooltipSpan.innerHTML = eventDescription;
+                targetDayElement.appendChild(tooltipSpan);
+            }
+            
+            // 🔹 Adicionamos a classe para destacar o evento no calendário
             targetDayElement.classList.add(eventType);
-            targetDayElement.appendChild(tooltipSpan);
-        }
+
 
         // 3️⃣ Função para enviar evento e atualizar calendário
         function submitEvent() {
