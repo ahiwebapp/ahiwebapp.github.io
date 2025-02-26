@@ -1167,13 +1167,19 @@
 
             var dayElements = targetMonthContainer.getElementsByClassName("day");
             var targetDayElement = null;
+            
             for (var j = 0; j < dayElements.length; j++) {
-                let dayText = dayElements[j].childNodes[0]?.nodeValue?.trim();
+                // 🔹 Agora conseguimos pegar corretamente os dias que estão dentro de <strong>
+                let dayText = dayElements[j].querySelector("strong") 
+                    ? dayElements[j].querySelector("strong").textContent.trim() 
+                    : dayElements[j].childNodes[0]?.nodeValue?.trim();
+            
                 if (dayText === day.toString()) {
                     targetDayElement = dayElements[j];
                     break;
                 }
             }
+
 
             if (!targetDayElement) {
                 console.warn("Dia não encontrado:", day);
