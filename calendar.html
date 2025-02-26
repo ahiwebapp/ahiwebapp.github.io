@@ -382,15 +382,41 @@
             }
             
             #legenda {
-                padding: 1px;
-                
-           
+                display: inline-flex;
+                font-size: 7px;
+            }
+            #legenda p {
+                font-size: 10px;
+                text-align: left;
             }
             #legenda a {
-                display: none;            
+                display: none;
             }
+            #goback-btn1 {
+                display: flex;
+                width: 100%;
+                justify-content: center;
+                margin-top: -10px;
+                position: fixed;
+                z-index: 1000;
+            }
+            #goback-btn1 a {
+                font-size: 35px;
+                text-decoration: none;
+                color: #b0b1b3;
+            }
+            #goback-btn1 a:hover {
+                color: #e59513;
+            }
+            #goback-btn1 h1 {
+                font-size: 35px;
+            }
+                        
             footer {
                 font-size: 12px;
+            }
+            .descricaoo {
+                margin-top: -15px;
             }
             .add-icon-container {
                 bottom: 30px;
@@ -428,6 +454,15 @@
     
 
     <div class="calendar-container">
+
+      <div id="goback-btn1"><a href="home.html"><h4><span class="invertido">➥</span></h4></a>
+
+            <div class="add-event-container" style=" margin-left: 10px; margin-top: 5px;" onclick="document.getElementById('event-form').style.display = 'block'">
+                <h1 style="cursor: pointer; transition: .4s;"><i class='bx bx-calendar-plus'></i></h1>
+                <div class="descricaoo">Adicionar novo evento</div>
+            </div>
+
+        </div> <br>
         
         <!-- Janeiro -->
         <div class="month">
