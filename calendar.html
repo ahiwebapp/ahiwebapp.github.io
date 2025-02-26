@@ -1118,7 +1118,7 @@
     <script>
 
         // --- URL do Apps Script ---
-        const scriptURL = "https://script.google.com/macros/s/AKfycbzy8xVKqPCep0a828oTD0u4A9TB4G-E0e2VtlrN-qG2KbIwQHZxErPTOybKLM9Biw7J/exec";
+        const scriptURL = "https://script.google.com/macros/s/AKfycbzmZPv6PoMP28j303iVKaX9ktbnOTTc0HgdZQCcz28fPIVXKMZEmdwpeN2QI9qE1hXv/exec";
 
         // 1️⃣ Buscar eventos ao carregar a página
         document.addEventListener("DOMContentLoaded", function () {
@@ -1225,15 +1225,22 @@
                 method: "POST",
                 body: formData
             })
-            .then(response => response.json())
+            .then(response => response.text())  // 🔹 Alterado para .text() para evitar erro de CORS
             .then(result => {
                 console.log("Resposta do servidor:", result);
-                if (result.status === "success") {
-                    console.log("Evento salvo com sucesso!");
-                    adicionarEventoNoCalendario(eventDate, eventType, eventDescription);
-                    alert("Evento salvo com sucesso!");
-                } else {
-                    throw new Error("Erro ao salvar evento.");
+                
+                try {
+                    var jsonResponse = JSON.parse(result); // 🔹 Agora tentamos converter manualmente o JSON
+                    if (jsonResponse.status === "success") {
+                        console.log("Evento salvo com sucesso!");
+                        adicionarEventoNoCalendario(eventDate, eventType, eventDescription);
+                        alert("Evento salvo com sucesso!");
+                    } else {
+                        throw new Error("Erro ao salvar evento.");
+                    }
+                } catch (error) {
+                    console.error("Erro ao processar resposta:", error);
+                    alert("Erro ao processar resposta do servidor!");
                 }
             })
             .catch(error => {
@@ -1245,7 +1252,7 @@
             document.getElementById("event-date").value = "";
             document.getElementById("event-description").value = "";
         }
-        
+
     </script>
     
 </body> 
