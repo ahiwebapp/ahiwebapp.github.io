@@ -1118,30 +1118,25 @@
     <script>
 
         // --- URL do Apps Script ---
-        const scriptURL = "https://script.google.com/macros/s/AKfycbx-HrneEZOw82AEDKlkieyH1MbG65hs-bouc0mlzVSWi9y79_agDimCjZYwpbJSaf6Q/exec";
+        const scriptURL = "https://script.google.com/macros/s/AKfycbzANf8sUc2m0m4iq8Bdj7Z0vk3xH75t3zyfhevW8V7d_yLCkgh5b1--0Q7UTiBLhu4X/exec";
 
         // 1️⃣ Buscar eventos ao carregar a página
         document.addEventListener("DOMContentLoaded", function () {
-            fetch(scriptURL, {
-                method: "GET",
-                headers: {
-                    "Cache-Control": "no-cache",
-                    "Pragma": "no-cache"
-                }
-            })
-            .then(response => response.json()) // Converte a resposta para JSON
-            .then(data => {
-                console.log("Resposta completa do servidor:", data); // Debug
-                const eventos = data; // ❌ Remova o JSON.parse() desnecessário
-
-                console.log("Eventos carregados:", eventos);
-                eventos.forEach(evento => {
-                    adicionarEventoNoCalendario(evento.date, evento.type, evento.description);
-                });
-            })
-            .catch(error => console.error("Erro ao carregar eventos:", error));
-
-        });
+          const callbackName = "jsonpCallback";
+      
+          // Criar um script dinâmico para JSONP
+          window[callbackName] = function (data) {
+              console.log("Eventos carregados via JSONP:", data);
+              data.forEach(evento => {
+                  adicionarEventoNoCalendario(evento.date, evento.type, evento.description);
+              });
+          };
+      
+          // Criando a requisição JSONP
+          const script = document.createElement("script");
+          script.src = `${scriptURL}?callback=${callbackName}`;
+          document.body.appendChild(script);
+      });
 
 
 
