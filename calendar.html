@@ -1118,7 +1118,7 @@
     <script>
 
         // --- URL do Apps Script ---
-        const scriptURL = "https://script.google.com/macros/s/AKfycbzANf8sUc2m0m4iq8Bdj7Z0vk3xH75t3zyfhevW8V7d_yLCkgh5b1--0Q7UTiBLhu4X/exec";
+        const scriptURL = "https://script.google.com/macros/s/AKfycbzy8xVKqPCep0a828oTD0u4A9TB4G-E0e2VtlrN-qG2KbIwQHZxErPTOybKLM9Biw7J/exec";
 
         // 1️⃣ Buscar eventos ao carregar a página
         document.addEventListener("DOMContentLoaded", function () {
@@ -1210,32 +1210,27 @@
             var eventDate = document.getElementById("event-date").value;
             var eventType = document.getElementById("event-type").value;
             var eventDescription = document.getElementById("event-description").value;
-
+        
             if (!eventDate || !eventDescription) {
                 alert("Preencha todos os campos para adicionar o evento.");
                 return;
             }
-
+        
             var formData = new FormData();
             formData.append("date", eventDate);
             formData.append("type", eventType);
             formData.append("description", eventDescription);
-
-            // Enviar os dados via POST
+        
             fetch(scriptURL, {
                 method: "POST",
                 body: formData
             })
-            .then(response => {
-                if (!response.ok) throw new Error("Erro na resposta do servidor.");
-                return response.json();
-            })
+            .then(response => response.json())
             .then(result => {
                 console.log("Resposta do servidor:", result);
-                
                 if (result.status === "success") {
                     console.log("Evento salvo com sucesso!");
-                    adicionarEventoNoCalendario(eventDate, eventType, eventDescription); // Atualiza o calendário na tela
+                    adicionarEventoNoCalendario(eventDate, eventType, eventDescription);
                     alert("Evento salvo com sucesso!");
                 } else {
                     throw new Error("Erro ao salvar evento.");
@@ -1245,13 +1240,12 @@
                 console.error("Erro ao enviar evento:", error);
                 alert("Erro ao salvar o evento!");
             });
-
-            // Fechar formulário e limpar campos
+        
             document.getElementById("event-form").style.display = "none";
             document.getElementById("event-date").value = "";
             document.getElementById("event-description").value = "";
         }
-
+        
     </script>
     
 </body> 
