@@ -1,0 +1,1176 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="icon" type="image/x-icon" href="static/img/ahi_fav_grey.png"/>
+    <link href="https://fonts.googleapis.com/css?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet"/>
+    <!--Boxicons CSS-->
+    <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
+    <!--/Boxicons CSS-->
+    <title>AHI | GRC - GROUP ROOMS CONTROL & LOST BUSINESS</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Poppins", sans-serif;
+            background: fixed linear-gradient(rgb(26, 36, 54), rgba(26, 36, 54, 0), rgba(255, 141, 1, 0.364)), url('/templates/static/img/background.png');
+            background-repeat:no-repeat;
+            background-size: cover;
+            background-attachment: fixed;
+            color: #b0b1b3;
+            text-align: center;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 0;
+            margin: 0;
+        }
+
+        header {
+            background: linear-gradient(rgb(26, 36, 54), rgba(26, 36, 54, 0.9), rgba(26, 36, 54, 0.742), rgba(26, 36, 54, 0.734),  rgba(255, 141, 1, 0));
+            width: 100%;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+            position: fixed;
+            top: 0;
+            border-bottom: 0px solid #b0b1b3;
+            z-index: 10;
+        }
+        header div {
+            justify-items: left;
+        }
+
+        header img {
+            width: 280px;
+            height: auto;
+        }
+        header h3 {
+            font-size: 14px;
+            color: #b0b1b3;
+        }
+
+        header .data-hora {
+            font-size: 10px;
+            color: #b0b1b3;
+        }
+
+        #logo {
+            max-width: 20%;
+            height: auto;
+        }
+
+        #saudacao{
+            margin-top: -.5px;
+        }
+        /* --- Formatação Condicional --- */
+        .highlight-row {
+            background-color: #ff00a6 !important; 
+        }
+        .highlight-deadline {
+            background-color: #8dfc96 !important;
+            color: #0d4f01; 
+    
+        }
+        .overdue-deadline {
+            background-color: #f1b9b9 !important;
+            color: #8f000e; 
+
+        }
+        /* --- /Formatação Condicional --- */
+
+        .tooltip {
+            display: none;
+            position: absolute;
+            background-color: #333;
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            white-space: nowrap;
+            z-index: 10;
+        }
+
+        .tooltip button {
+            background: none;
+            color: #fff;
+            border: none;
+            margin: 0 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .tooltip button:hover {
+            text-decoration: underline;
+        }
+
+
+        .search-container {
+            display: flex;
+            align-items: center;
+            position: relative;
+            width: auto; /* Ajusta para ocupar o espaço disponível */
+        }
+
+        #searchBox{
+            background-color: #84848436;
+            outline: none;
+            color: #bdbdbd;
+            font-size: 16px;
+            font-weight: 500;
+            padding-left: 40px;
+        }
+
+        .search-container #lupa {
+            position: absolute;
+            left: 10px; 
+            color: #b6b6b6; 
+            font-size: 25px; 
+            pointer-events: none;
+            padding-right: 10px;
+        }
+
+        .search-container input {
+            width: 100%;
+            padding: 10px 15px;
+            padding-left: 60px; 
+            border: 1px solid #c87902;
+            border-radius: 10px;
+            color: #d3d3d3;
+            outline: none; 
+            font-size: 16px; 
+        }
+
+        .search-container input:focus {
+            border: 3px solid #c87902; 
+            box-shadow: 0 0 10px rgba(128, 93, 12, 0.693); 
+            padding-left: 40px;
+            transition: padding-left 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .search-container input::placeholder {
+            color: #aaa; 
+            font-size: 16px; 
+            padding-left: 10px;
+        }
+
+        #export{
+            width: 160px;
+            background-color: rgb(217, 129, 6);
+            padding: 10px;
+            border-radius: 10px;
+            color: #d3d3d3;
+            font-size: 16px;
+            cursor: pointer;
+            transition: .4s;
+            margin-left: 10px;
+            border: none;
+        }
+        #export:hover{
+            background-color: rgb(232, 143, 0);
+            box-shadow: 0 0 10px rgba(152, 108, 6, 0.693);           
+        }
+        #export i {
+            font-size: 20px;
+        }
+       
+        
+
+
+        .container {
+            max-width: 190vh;
+            margin: 10px auto;
+            background: #ffffff00;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        #fixedbar{
+            display: inline;
+            position: fixed;
+            margin-top: 150px;
+            z-index: 100000000;
+            justify-content: space-between;
+            padding: 25px;
+            
+        }
+        #tableboxx{
+            margin-top: 125px;
+            
+        }
+
+        
+
+        th{
+            border: none;
+            padding: 8px;
+            text-align: center;
+            background-color:transparent;
+            color: white;
+            cursor: pointer;
+            transition: 0.4s;
+        }
+        th:hover{
+            background-color: #d0800074;
+        }
+        td {
+            border: none;
+            padding: 2px;
+            text-align: center;
+            
+        }
+
+        #firstcorner{
+            border-radius: 0;
+        }
+        #lastcorner{
+            
+            margin-right: 20px;
+        }
+        #tbodytext{
+            color: #fff;
+        }
+
+        /* Cores alternadas para linhas */
+        tr:nth-child(odd) {
+            background-color: #333333a6;
+        }
+
+        tr:nth-child(even) {
+            background-color: #4d4d4da6; /* Corrigido: mudado de red para uma cor mais adequada */
+        }
+
+        /* Cor de destaque para linha com data igual a hoje */
+        .highlight-row {
+            color: rgb(85, 182, 0);
+        }
+
+        /* tr:hover {
+            background-color: #22c60c;
+        } */
+
+
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;          
+            top: 0;          
+            left: 0;          
+            width: 100%;          
+            height: 100%;     
+            background-color: rgba(0, 0, 0, 0.7);          
+            justify-content: center;          
+            align-items: center;          
+            overflow: auto; /* Permite rolagem no modal */          
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: #ffffff29;
+            backdrop-filter: blur(5px);
+            width: 400px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            position: absolute; 
+            padding: 30px;
+            border-radius: 15px;  
+            top: 0;
+            margin-top: 30px;
+            padding-bottom: 30px;
+        }
+
+        .modal-content h2 {
+            margin: 0 0 10px;
+            color: #333;
+        }
+        .modal-content input, #obs{
+            border-radius: 10px;
+            height: 40px;
+            font-size: 18px;
+            text-align: center;
+            color: #333;
+            background-color: #ffffff88;
+            border: 1px solid #c87902;
+        }
+
+        .modal-content form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .modal-content label {
+            margin: 10px 0 5px;
+            font-weight: bold;
+        }
+        #submit {
+            height: 40px;
+            margin-top: 25px;
+            width: 100%;
+            border: none;
+            border-radius: 10px;
+            background: #c87902;
+            cursor: pointer;
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: 800;
+        }
+        #submit:hover {
+            background-color: #c07403;
+            box-shadow: 0 0 10px rgba(152, 108, 6, 0.693);  
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            border: none;
+            font-size: 25px;
+            background: transparent;
+            color: #aaa;
+            font-weight: 800;
+            cursor: pointer;
+        }
+
+        footer {
+            text-align: center;
+            padding: 10px;
+            background-color: transparent;
+            color: #c4c4c4;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            font-size: 14px;
+        }
+
+        footer a {
+            color: #b0b1b3;
+            text-decoration: none;
+            transition: .4s;
+        }
+
+        footer a:hover {
+            text-decoration: none;
+            color: coral;
+        }
+
+        #yailup{
+            font-size: 9px;
+        }
+        
+
+
+        /* Suport */
+        .add-icon-container {
+            z-index: 1000;
+            position: fixed;
+            bottom: 15px;
+            right: 15px;
+            background-color: #25D366;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            transition: 0.4s;
+            font-weight: 100;
+        }
+        .add-icon-container:hover{
+            background-color: #13a247;
+        }
+
+        .add-icon-container a {
+            color: white;
+            justify-content: center;
+            align-content: center;
+            font-size: 40px;
+            display: flex;
+            text-decoration: none;
+            position: relative;
+            left: 5px;
+            top: 5px;
+            font-weight: 100;
+        }
+
+        /* Estilo para a descrição */
+        .descricao {
+            position: absolute;
+            bottom: 35px; /* Aumente ou diminua conforme necessário */
+            left: -150px;
+            transform: translateX(-50%);
+            background-color: var(--primary-color);
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: 400;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+            white-space: nowrap; /* Impede que o texto quebre */
+        }
+
+        /* Mostrar a descrição quando o cursor passar sobre o link */
+        .add-icon-container:hover .descricao {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        #obs {
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        /* Form scrollable container */
+        .form-container {
+            max-height: 70vh;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+
+        /* Loading indicator */
+        .loader {
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #c87902;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 2s linear infinite;
+            margin: 20px auto;
+            display: none;
+            margin-top: 400px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Row hover effect */
+        #results-body tr:hover {
+            background-color: rgba(200, 121, 2, 0.3);
+            cursor: pointer;
+        }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+
+            header {
+                height: 60px; /* Smaller header height on mobile */
+                margin-top: 5px;
+            }
+
+
+            header img {
+                width: 105px;
+                margin-right: 5px;
+            }
+
+            header .data-hora {
+                font-size: 10px;
+                color: #b0b1b3;
+            }
+            header h3 {
+                font-size: 12px;
+                color: #b0b1b3;
+            }
+
+            .add-icon-container {
+                bottom: 50px;
+                right: 15px;
+            }
+
+            footer {
+                font-size: 10px;
+            }     
+            
+            .modal-content {
+                width: 95%;
+                margin-top: 10px;
+            }
+        }
+    
+       
+        /* table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: center;
+        } */
+
+        /* th {
+            border-radius: 10px;
+        } */
+        /* input {
+            width: 50%;
+            padding: 10px;
+            margin: 10px 0;
+        } */
+
+        /* Alternando as cores das linhas */
+        #results-body tr:nth-child(odd) {
+            background-color: #f0f0f009; /* Cor de fundo para as linhas ímpares */
+        }
+
+        #results-body tr:nth-child(even) {
+            background-color: #ffffff25; /* Cor de fundo para as linhas pares */
+        }
+        #results-body tr:last-child td:last-child {
+            border-radius: 0 0 15px 0; /* Arredonda os cantos inferior direito e inferior esquerdo */
+        }
+        #results-body tr:last-child td:first-child {
+            border-radius: 0 0 0 15px; /* Arredonda os cantos inferior direito e inferior esquerdo */
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="home.html"><img id="logoAHI" src="static/img/logo_ahi.png" alt="Logo AHI" /></a>
+        <div> 
+          <h3 id="saudacao"></h3>
+          <p class="data-hora" id="dataHora"></p>
+        </div> <br>
+
+        <div class="fixedbar" id="fixedbar">
+            <div class="controls">
+                <div class="search-container">
+                    <i id="lupa" class='bx bx-search-alt-2'></i>
+                    <input type="text" id="searchBox" placeholder="Buscar..." onkeyup="filtrarTabela()">
+                    <div>
+                        <button id="export" onclick="abrirModal()"><i class='bx bx-add-to-queue'></i> Novo Lead</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Loading indicator -->
+    <div class="loader" id="loader"></div>
+
+    <!-- Tooltip for row actions -->
+    <div class="tooltip" id="tooltip">
+        <button id="editarBtn">Editar</button>
+        <button id="excluirBtn">Excluir</button>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <button class="close-btn" onclick="fecharModal()">&times;</button>
+            <h2 style="color: #b0b1b3;" id="modalTitle">Adicionar Registro</h2>
+
+            <div class="form-container">
+                <form id="add-form">
+                    <!-- Campos correspondentes às colunas -->
+                    <label for="ID">ID</label>
+                    <input type="number" id="ID" placeholder="ID">
+                    <label for="dataOrcamento">Data do Orçamento</label>
+                    <input type="date" id="dataOrcamento" placeholder="dataOrcamento">
+                    <label for="agencia">Agência/Solicitante</label>
+                    <input type="text" id="agencia" placeholder="agencia">
+                    <label for="responsavel">Responsável</label>
+                    <input type="text" id="responsavel" placeholder="responsavel">
+                    <label for="telefoneSolicitante">Telefone Solicitante</label>
+                    <input type="text" id="telefoneSolicitante">
+                    <label for="emailSolicitante">E-mail Solicitante</label>
+                    <input type="email" id="emailSolicitante">
+                    <label for="hotel">Hotel</label>
+                    <input type="text" id="hotel"> <!-- Fixed missing closing tag -->
+                    <label for="sala">Sala</label>
+                    <input type="text" id="sala">
+                    <label for="montagem">Montagem</label>
+                    <input type="text" id="montagem">
+                    <label for="dataInicio">Data Início</label>
+                    <input type="date" id="dataInicio">
+                    <label for="dataFim">Data Fim</label>
+                    <input type="date" id="dataFim">
+                    <label for="totalDiasUsados">Total dias usados</label>
+                    <input type="number" id="totalDiasUsados" min="0">
+                    <label for="segmento">Segmento</label>
+                    <input type="text" id="segmento">
+                    <label for="segmentoMercado">Segmento de Mercado</label>
+                    <input type="text" id="segmentoMercado">
+                    <label for="responsavelAtlantica">Responsável Vendas - Atlantica</label>
+                    <input type="text" id="responsavelAtlantica">
+                    <label for="responsavelHotel">Responsável no Hotel</label>
+                    <input type="text" id="responsavelHotel">
+                    <label for="perfilEvento">Perfil do Evento</label>
+                    <input type="text" id="perfilEvento">
+                    <label for="budgetCliente">Budget do Cliente</label>
+                    <input type="number" id="budgetCliente" min="0">
+                    <label for="concorrentes">Concorrentes</label>
+                    <input type="text" id="concorrentes">
+                    <label for="fatorDecisivo">Fator Decisivo</label>
+                    <input type="text" id="fatorDecisivo">
+                    <label for="qtdPAX">Qtd PAX Evento</label>
+                    <input type="number" id="qtdPAX" min="0">
+                    <label for="eventoHospedagem">Evento | Hospedagem</label>
+                    <input type="text" id="eventoHospedagem">
+                    <label for="nomeEvento">Nome Evento</label>
+                    <input type="text" id="nomeEvento">
+                    <label for="status">Status</label>
+                    <input type="text" id="status">
+                    <label for="motivoCancelamento">Motivo Cancelamento</label>
+                    <input type="text" id="motivoCancelamento">
+                    <label for="concorrenteEscolhido">Concorrente Escolhido</label>
+                    <input type="text" id="concorrenteEscolhido">
+                    <label for="valorConcorrente">Valor Concorrente</label>
+                    <input type="number" id="valorConcorrente" min="0">
+                    <label for="deadlineConfirmacao">Deadline Confirmação</label>
+                    <input type="date" id="deadlineConfirmacao">
+                    <label for="dataConfirmacao">Data de Confirmação</label>
+                    <input type="date" id="dataConfirmacao">
+                    <label for="rns">RNs</label>
+                    <input type="number" id="rns" min="0">
+                    <label for="adr">ADR</label>
+                    <input type="number" id="adr" min="0" step="0.01">
+                    <label for="receitaHospedagem">Receita Hospedagem</label>
+                    <input type="number" id="receitaHospedagem" min="0" step="0.01">
+                    <label for="diariasHospedagem">Diárias (Hospedagem)</label>
+                    <input type="number" id="diariasHospedagem" min="0">
+                    <label for="valorHospedagem">Valor (Hospedagem)</label>
+                    <input type="number" id="valorHospedagem" min="0" step="0.01">
+                    <label for="receitaSalas">Receita Salas</label>
+                    <input type="number" id="receitaSalas" min="0" step="0.01">
+                    <label for="diariasSalas">Diárias (Salas)</label>
+                    <input type="number" id="diariasSalas" min="0">
+                    <label for="valorSalas">Valor (Salas)</label>
+                    <input type="number" id="valorSalas" min="0" step="0.01">
+                    <label for="receitaEquipamentos">Receita Equipamentos</label>
+                    <input type="number" id="receitaEquipamentos" min="0" step="0.01">
+                    <label for="receitaAB">Receita A&B</label>
+                    <input type="number" id="receitaAB" min="0" step="0.01">
+                    <label for="receitaTotal">Receita Total Prevista</label>
+                    <input type="number" id="receitaTotal" min="0" step="0.01">
+                    <label for="pagamento">Pagamento</label>
+                    <input type="text" id="pagamento">    
+                    <label for="obs">OBS</label>
+                    <textarea id="obs"></textarea>    
+                    <label for="mes">Mês</label>
+                    <input type="text" id="mes">
+                    <label for="ano">Ano</label>
+                    <input type="number" id="ano" min="0">
+                    <label for="mes_">Mês_</label>
+                    <input type="text" id="mes_">
+                    <label for="ano_">Ano_</label>
+                    <input type="number" id="ano_" min="0">
+                    <button id="submit" type="submit">Salvar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- /Modal -->
+
+    <main class="tableboxx" id="tableboxx">
+        <div class="container">
+            <table id="tabela-registros">
+                <thead style="position: sticky; top: 150px; z-index: 10;">
+                    <tr id="header-row">
+                        <!-- Headers will be dynamically generated -->
+                    </tr>
+                </thead>
+                <tbody id="results-body"></tbody>
+            </table>
+        </div>
+    </main>
+
+    <!-- Suport -->
+    <div class="add-icon-container">
+        <a href="https://wa.me/5511918636360" target="blank"><i id="support" class='bx bxl-whatsapp'></i></a>
+        <div class="descricao">Em caso de dúvida, chama no WhatsApp!</div>
+    </div>
+    <!-- /Suport -->
+
+    <footer>
+        <p>&copy; <span id="anoAtual"></span> AHI WebApp | Cluster MG - BHZ.<br> <span id="yailup">Created by <a href="https://yailup.com" target="blank"><strong>Yailup Soluções</strong></a></span></p>
+    </footer>
+
+    <!--Header function  -->
+    <script>
+        // Função para obter a saudação dependendo da hora do dia
+        function obterSaudacao() {
+            const agora = new Date();
+            const hora = agora.getHours(); // Obtém a hora atual (de 0 a 23)
+
+            let saudacao = "";
+            
+            if (hora >= 6 && hora < 12) {
+                saudacao = "Olá, Bom dia! Seja bem-vindo(a)!";
+            } else if (hora >= 12 && hora < 18) {
+                saudacao = "Olá, Boa tarde! Seja bem-vindo(a)!";
+            } else {
+                saudacao = "Olá, Boa noite! Seja bem-vindo(a)!";
+            }
+
+            return saudacao;
+        }
+
+        // Exibe a saudação no elemento com o id "saudacao"
+        document.getElementById("saudacao").textContent = obterSaudacao();
+
+
+        function updateDataHora() {
+        const data = new Date();
+        const options = {
+            weekday: "long",
+            day: "numeric",
+            month: "long",
+            year: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+        };
+        const dataHoraFormatada = data.toLocaleString("pt-BR", options);
+        document.getElementById("dataHora").textContent = dataHoraFormatada;
+        }
+
+        setInterval(updateDataHora, 1000);
+
+
+        // Responsive logo
+        window.addEventListener("load", function () {
+            let logo = document.getElementById("logoAHI");
+
+            function atualizarLogo() {
+                if (window.innerWidth <= 768) {
+                    logo.src = "static/img/ahi_logo_mobile.png";
+                } else {
+                    logo.src = "static/img/logo_ahi.png";
+                }
+            }
+
+            atualizarLogo(); // Atualiza ao carregar a página
+            window.addEventListener("resize", atualizarLogo); // Atualiza ao redimensionar a tela
+        });
+
+            document.addEventListener("DOMContentLoaded", function () {
+            document.getElementById("anoAtual").textContent = new Date().getFullYear();
+        });
+
+
+
+        // ----- Variáveis do modal -----
+        const modal = document.getElementById('modal');
+        let linhaSelecionadaParaEdicao = null; // Variável para armazenar a linha selecionada
+    
+        // Abrir modal
+        function abrirModal() {
+            modal.style.display = 'flex';
+        }
+    
+        // Fechar modal
+        function fecharModal() {
+            modal.style.display = 'none';
+            registroSelecionado = null; // Limpar o registro selecionado
+            document.getElementById('add-form').reset(); // Limpar o formulário
+            document.getElementById("modalTitle").textContent = "Adicionar Registro"; // Resetar o título
+        }
+    
+        window.onclick = function (event) {
+            if (event.target === modal) fecharModal();
+        };
+    
+        window.onkeydown = function (event) {
+            if (event.key === 'Escape') fecharModal();
+        };
+    
+        // Função auxiliar: Formatar data para o padrão brasileiro
+        function formatarDataParaBR(data) {
+            if (!data) return "";
+            const [ano, mes, dia] = data.split("-");
+            return `${dia}/${mes}/${ano}`;
+        }
+        // ----- /Variáveis do modal -----
+
+        // Tooltip Configuração
+        const tooltip = document.getElementById("tooltip");
+        const editarBtn = document.getElementById("editarBtn");
+        const excluirBtn = document.getElementById("excluirBtn");
+        let linhaSelecionada = null;
+    
+        document.querySelector("#results-body").addEventListener("click", function (event) {
+            const linha = event.target.closest("tr");
+            if (linha) {
+                // Remover a classe 'selected-row' de qualquer linha previamente selecionada
+                document.querySelectorAll("#results-body tr.selected-row").forEach(row => {
+                    row.classList.remove("selected-row");
+                });
+                
+                // Adicionar a classe 'selected-row' à linha atual
+                linha.classList.add("selected-row");
+    
+                linhaSelecionada = linha;
+                tooltip.style.display = "block";
+                tooltip.style.left = `${event.pageX + 10}px`;
+                tooltip.style.top = `${event.pageY + 10}px`;
+            } else {
+                tooltip.style.display = "none";
+            }
+        });
+    
+        editarBtn.addEventListener("click", function () {
+            if (linhaSelecionada) {
+                abrirModal();
+                preencherFormulario(linhaSelecionada);
+                tooltip.style.display = "none";
+            }
+        });
+    
+        excluirBtn.addEventListener("click", function () {
+            if (linhaSelecionada) {
+                const registro = obterDadosDaLinha(linhaSelecionada);
+                if (confirm(`Tem certeza que deseja excluir o registro "${registro.nomeEvento || registro.ID}"?`)) {
+                    excluirRegistro(registro.Linha);
+                    tooltip.style.display = "none";
+                }
+            }
+        });
+    
+        document.addEventListener("click", function (event) {
+            if (!tooltip.contains(event.target) && !event.target.closest("tr")) {
+                tooltip.style.display = "none";
+            }
+        });
+
+
+    </script>
+    <!-- /Header function -->
+
+    <!-- GRC Function -->
+    <script>
+        const scriptURL = "https://script.google.com/macros/s/AKfycbwf-VL89BDCnGIEdsI8hRMkrgbG3KC9dhRi7Uas259XzoP8mhAy5JtsXmG2ecnjdcR5/exec";
+    
+        // Variável global para armazenar o registro selecionado
+        let registroSelecionado = null;
+
+        // Função para formatar a data no formato dd/mm/aaaa
+        function formatarData(data) {
+            const dateObj = new Date(data);
+            const dia = String(dateObj.getDate()).padStart(2, '0'); // Adiciona o zero à esquerda
+            const mes = String(dateObj.getMonth() + 1).padStart(2, '0'); // Meses começam do 0, então adiciona +1
+            const ano = dateObj.getFullYear();
+    
+            return `${dia}/${mes}/${ano}`;
+        }
+    
+        // Função para verificar se o valor é uma data válida
+        function isData(val) {
+            // Verifica se o valor é uma string e se é uma data no formato ISO
+            if (typeof val === "string" && val.match(/\d{4}-\d{2}-\d{2}/)) {
+                const data = new Date(val);
+                return !isNaN(data.getTime()); // Verifica se a data é válida
+            }
+            return false;
+        }
+    
+        async function carregarDados() {
+            try {
+                // Mostrar indicador de carregamento
+                toggleLoader(true);
+                
+                const response = await fetch(scriptURL);
+                const registros = await response.json();
+    
+                // Verifique o que está sendo retornado da API
+                console.log("Registros retornados:", registros);
+    
+                if (registros.length === 0) {
+                    document.getElementById("tabela-registros").innerHTML = "Nenhum dado encontrado.";
+                    return;
+                }
+    
+                const thead = document.getElementById("header-row");
+                const tbody = document.querySelector("#tabela-registros tbody");
+                tbody.innerHTML = ""; // Limpa o corpo da tabela antes de adicionar os novos dados
+    
+                // Criar cabeçalhos
+                thead.innerHTML = "";
+                Object.keys(registros[0]).forEach(key => {
+                    const th = document.createElement("th");
+                    th.textContent = key;
+                    thead.appendChild(th);
+                });
+    
+                // Criar linhas da tabela
+                registros.forEach(registro => {
+                    const tr = document.createElement("tr");
+                    Object.values(registro).forEach(valor => {
+                        const td = document.createElement("td");
+    
+                        // Verifica se o valor é uma data e formata, caso contrário, deixa como está
+                        if (valor && isData(valor)) {
+                            td.textContent = formatarData(valor);
+                        } else {
+                            td.textContent = valor;
+                        }
+    
+                        tr.appendChild(td);
+                    });
+                    tbody.appendChild(tr);
+                });
+            } catch (error) {
+                console.error("Erro ao carregar os dados:", error);
+                mostrarFeedback("Erro ao carregar os dados.", "erro");
+            } finally {
+                // Esconder indicador de carregamento
+                toggleLoader(false);
+            }
+        }
+    
+        function filtrarTabela() {
+            const filtro = document.getElementById("searchBox").value.toLowerCase();
+            const linhas = document.querySelectorAll("#tabela-registros tbody tr");
+    
+            linhas.forEach(linha => {
+                const textoLinha = linha.textContent.toLowerCase();
+                linha.style.display = textoLinha.includes(filtro) ? "" : "none";
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", carregarDados);
+
+        // Função para preencher o formulário com os dados do registro selecionado
+        function preencherFormulario(linha) {
+            const celulas = linha.querySelectorAll("td");
+            const headers = document.querySelectorAll("#header-row th");
+            
+            // Criar um objeto com os dados da linha
+            const registro = {};
+            for (let i = 0; i < celulas.length; i++) {
+                if (headers[i]) {
+                    registro[headers[i].textContent] = celulas[i].textContent;
+                }
+            }
+            
+            // Armazenar o registro para uso posterior
+            registroSelecionado = registro;
+            
+            // Atualizar o título do modal
+            document.getElementById("modalTitle").textContent = "Editar Registro";
+            
+            // Preencher o formulário com os dados
+            const form = document.getElementById("add-form");
+            const inputs = form.querySelectorAll("input, textarea");
+            
+            inputs.forEach(input => {
+                const fieldId = input.id;
+                if (registro[fieldId] !== undefined) {
+                    // Tratamento especial para campos de data
+                    if (input.type === "date" && registro[fieldId]) {
+                        // Converter formato dd/mm/yyyy para yyyy-mm-dd para campos de data
+                        const parts = registro[fieldId].split('/');
+                        if (parts.length === 3) {
+                            input.value = `${parts[2]}-${parts[1]}-${parts[0]}`;
+                        } else {
+                            input.value = registro[fieldId];
+                        }
+                    } else {
+                        input.value = registro[fieldId];
+                    }
+                }
+            });
+        }
+
+        // Função para validar o formulário antes de enviar
+        function validarFormulario() {
+            const form = document.getElementById("add-form");
+            const camposObrigatorios = ["ID", "dataOrcamento", "agencia", "responsavel", "nomeEvento"];
+            
+            let valido = true;
+            let mensagemErro = "Por favor, preencha os seguintes campos obrigatórios:\n";
+            
+            camposObrigatorios.forEach(campo => {
+                const input = form.querySelector(`#${campo}`);
+                if (!input.value.trim()) {
+                    input.style.borderColor = "red";
+                    valido = false;
+                    mensagemErro += `- ${input.previousElementSibling.textContent}\n`;
+                } else {
+                    input.style.borderColor = "#c87902";
+                }
+            });
+            
+            if (!valido) {
+                alert(mensagemErro);
+            }
+            
+            return valido;
+        }
+
+        // Modificar o evento de submissão do formulário
+        document.getElementById("add-form").addEventListener("submit", async function(event) {
+            event.preventDefault();
+            
+            if (!validarFormulario()) {
+                return;
+            }
+            
+            // Mostrar indicador de carregamento
+            toggleLoader(true);
+            
+            const formData = new FormData();
+            const inputs = this.querySelectorAll("input, textarea");
+            
+            // Adicionar cada campo ao FormData
+            inputs.forEach(input => {
+                formData.append(input.id, input.value);
+            });
+            
+            try {
+                let response;
+
+                // Se estiver editando um registro existente
+                if (registroSelecionado && registroSelecionado["Linha"]) {
+                    formData.append("Linha", registroSelecionado["Linha"]);
+                    formData.append("_method", "PUT"); // Adicione esta linha
+                    response = await fetch(scriptURL, { 
+                        method: "POST", 
+                        body: formData 
+                    });
+                    mostrarFeedback("Registro atualizado com sucesso!", "sucesso");
+                }
+
+                
+                // Se estiver editando um registro existente
+                if (registroSelecionado && registroSelecionado["Linha"]) {
+                    formData.append("Linha", registroSelecionado["Linha"]);
+                    formData.append("_method", "PUT"); // Adicione esta linha para indicar que é uma atualização
+                    response = await fetch(scriptURL, { 
+                        method: "POST", // Mude de PUT para POST
+                        body: formData 
+                    });
+                    mostrarFeedback("Registro atualizado com sucesso!", "sucesso");
+                } else {
+                    // Se estiver adicionando um novo registro
+                    response = await fetch(scriptURL, { 
+                        method: "POST", 
+                        body: formData 
+                    });
+                    mostrarFeedback("Registro adicionado com sucesso!", "sucesso");
+                }
+                
+                fecharModal();
+                
+                // Aguardar um curto período para que o Google Sheets processe a alteração
+                setTimeout(async () => {
+                    await carregarDados();
+                }, 1500);
+            } catch (error) {
+                console.error("Erro:", error);
+                mostrarFeedback("Ocorreu um erro ao salvar o registro.", "erro");
+            } finally {
+                // Esconder indicador de carregamento
+                toggleLoader(false);
+            }
+        });
+
+        // Função para obter dados da linha
+        function obterDadosDaLinha(linha) {
+            const celulas = linha.querySelectorAll("td");
+            const headers = document.querySelectorAll("#header-row th");
+            
+            const registro = {};
+            for (let i = 0; i < celulas.length; i++) {
+                if (headers[i]) {
+                    registro[headers[i].textContent] = celulas[i].textContent;
+                }
+            }
+            
+            return registro;
+        }
+
+        async function excluirRegistro(linha) {
+            if (!linha) return;
+            
+            // Mostrar indicador de carregamento
+            toggleLoader(true);
+            
+            try {
+                // Em vez de usar DELETE diretamente, use POST com um parâmetro _method
+                const formData = new FormData();
+                formData.append("Linha", linha);
+                formData.append("_method", "DELETE");
+                
+                const response = await fetch(scriptURL, { 
+                    method: "POST", 
+                    body: formData 
+                });
+                
+                if (response.ok) {
+                    mostrarFeedback("Registro excluído com sucesso!", "sucesso");
+                    
+                    // Aguardar um curto período para que o Google Sheets processe a alteração
+                    setTimeout(async () => {
+                        await carregarDados();
+                    }, 1500);
+                } else {
+                    mostrarFeedback("Erro ao excluir o registro.", "erro");
+                }
+            } catch (error) {
+                console.error("Erro:", error);
+                mostrarFeedback("Ocorreu um erro ao excluir o registro.", "erro");
+            } finally {
+                // Esconder indicador de carregamento
+                toggleLoader(false);
+            }
+        }
+
+
+        // Função para mostrar/esconder o indicador de carregamento
+        function toggleLoader(show) {
+            document.getElementById("loader").style.display = show ? "block" : "none";
+        }
+
+        // Função para mostrar mensagens de feedback
+        function mostrarFeedback(mensagem, tipo) {
+            // Criar elemento de feedback se não existir
+            let feedback = document.getElementById("feedback");
+            if (!feedback) {
+                feedback = document.createElement("div");
+                feedback.id = "feedback";
+                feedback.classList.add("feedback"); // Use classList para adicionar a classe
+                feedback.style.position = "fixed";
+                feedback.style.top = "20px";
+                feedback.style.right = "20px";
+                feedback.style.padding = "15px 20px";
+                feedback.style.borderRadius = "5px";
+                feedback.style.boxShadow = "0 4px 8px rgba(0,0,0,0.2)";
+                feedback.style.zIndex = "2000";
+                feedback.style.transition = "opacity 0.5s ease-in-out";
+                document.body.appendChild(feedback);
+            }
+            
+            // Definir estilo baseado no tipo
+            feedback.className = "feedback"; // Limpar classes existentes
+            if (tipo === "sucesso") {
+                feedback.classList.add("sucesso");
+            } else if (tipo === "erro") {
+                feedback.classList.add("erro");
+            } else {
+                feedback.classList.add("info");
+            }
+            
+            feedback.textContent = mensagem;
+            feedback.style.opacity = "1";
+            
+            // Esconder após 3 segundos
+            setTimeout(() => {
+                feedback.style.opacity = "0";
+            }, 3000);
+        }
+    </script>   
+    <!-- /GRC Function -->
+    
+</body>
+</html>
