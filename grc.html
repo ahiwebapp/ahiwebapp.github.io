@@ -8,7 +8,13 @@
     <!--Boxicons CSS-->
     <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
     <!--/Boxicons CSS-->
+
+    <!-- Chart.js para gráficos -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
+
+
     <title>AHI | GRC - GROUP ROOMS CONTROL & LOST BUSINESS</title>
+    
     <style>
         * {
             margin: 0;
@@ -18,7 +24,7 @@
 
         body {
             font-family: "Poppins", sans-serif;
-            background: fixed linear-gradient(rgb(26, 36, 54), rgba(26, 36, 54, 0), rgba(255, 141, 1, 0.364)), url('/static/img/background.png');
+            background: fixed linear-gradient(rgb(26, 36, 54), rgba(26, 36, 54, 0), rgba(255, 141, 1, 0.364)), url('/templates/static/img/background.png');
             background-repeat:no-repeat;
             background-size: cover;
             background-attachment: fixed;
@@ -30,6 +36,8 @@
             align-items: center;
             padding: 0;
             margin: 0;
+            flex-direction: column;
+            overflow-x: hidden;
         }
 
         header {
@@ -38,7 +46,7 @@
             display: inline-flex;
             justify-content: center;
             align-items: center;
-            padding: 15px;
+            padding: 15px 30px;
             position: fixed;
             top: 0;
             border-bottom: 0px solid #b0b1b3;
@@ -58,8 +66,9 @@
         }
 
         header .data-hora {
-            font-size: 10px;
+            font-size: 11px;
             color: #b0b1b3;
+            text-align: left;
         }
 
         #logo {
@@ -70,21 +79,6 @@
         #saudacao{
             margin-top: -.5px;
         }
-        /* --- Formatação Condicional --- */
-        .highlight-row {
-            background-color: #ff00a6 !important; 
-        }
-        .highlight-deadline {
-            background-color: #8dfc96 !important;
-            color: #0d4f01; 
-    
-        }
-        .overdue-deadline {
-            background-color: #f1b9b9 !important;
-            color: #8f000e; 
-
-        }
-        /* --- /Formatação Condicional --- */
 
         .tooltip {
             display: none;
@@ -180,39 +174,78 @@
         #export i {
             font-size: 20px;
         }
-       
-        
+        #exportz {
+            font-size: 20px;
+        }
+        #exportzz {
+            font-size: 20px;
+        }
 
+        .controls {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            width: 100%;
+        }
 
         .container {
             max-width: 190vh;
+            max-height: 70vh;
             margin: 10px auto;
             background: #ffffff00;
             padding: 10px;
-            border-radius: 5px;
+            border-radius: 15px;
+            overflow-x: auto; /* Adiciona rolagem horizontal */
+            overflow-y: auto; /* Adiciona rolagem horizontal */
         }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 1200px; /* Largura mínima para garantir que a tabela não fique muito comprimida */
+        }
+
+
+        .container::-webkit-scrollbar {
+            height: 8px;
+    
+        }
+
+        .container::-webkit-scrollbar-thumb {
+            background-color: #c87902;
+            border-radius: 4px;
+            
+        }
+
+        .container::-webkit-scrollbar-track {
+            background-color: rgba(255, 255, 255, 0.1);
+            
+        }
+
 
         #fixedbar{
             display: inline;
             position: fixed;
-            margin-top: 150px;
+            margin-top: 110px;
             z-index: 100000000;
             justify-content: space-between;
-            padding: 25px;
-            
+            padding: 25px;            
         }
         #tableboxx{
             margin-top: 125px;
-            
         }
 
-        
+        .tableboxx thead {
+            position: sticky;
+            top: .01px; /* Ajuste conforme a altura do seu header + fixedbar */
+            z-index: 20;
+            background-color: rgba(15, 28, 51, 0.84); /* Cor de fundo para o cabeçalho */
+        }
 
         th{
             border: none;
             padding: 8px;
             text-align: center;
-            background-color:transparent;
             color: white;
             cursor: pointer;
             transition: 0.4s;
@@ -225,6 +258,13 @@
             padding: 2px;
             text-align: center;
             
+        }
+        .highlight-search {
+            background-color: #ffeb3b;
+            color: #333;
+            font-weight: bold;
+            padding: 2px;
+            border-radius: 2px;
         }
 
         #firstcorner{
@@ -251,12 +291,6 @@
         .highlight-row {
             color: rgb(85, 182, 0);
         }
-
-        /* tr:hover {
-            background-color: #22c60c;
-        } */
-
-
 
         /* Modal Styles */
         .modal {
@@ -498,26 +532,6 @@
         }
     
        
-        /* table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-            text-align: center;
-        }
-
-        th, td {
-            padding: 12px;
-            text-align: center;
-        } */
-
-        /* th {
-            border-radius: 10px;
-        } */
-        /* input {
-            width: 50%;
-            padding: 10px;
-            margin: 10px 0;
-        } */
 
         /* Alternando as cores das linhas */
         #results-body tr:nth-child(odd) {
@@ -533,6 +547,200 @@
         #results-body tr:last-child td:first-child {
             border-radius: 0 0 0 15px; /* Arredonda os cantos inferior direito e inferior esquerdo */
         }
+
+        /* Estilos do Dashboard */
+        .dashboard-container {
+            max-width: 190vh;
+            margin: 30px auto;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            border-radius: 15px;
+            color: #b0b1b3;
+            display: none;
+            margin-top: 150px;
+        }
+
+        .dashboard-container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #c87902;
+        }
+
+        /* Filtros */
+        .filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 25px;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            min-width: 150px;
+        }
+
+        .filter-group label {
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+
+        .filter-group select {
+            padding: 8px;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid #c87902;
+            color: #fff;
+        }
+
+        #applyFilters {
+            background: #c87902;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            align-self: flex-end;
+            margin-top: 22px;
+            transition: background 0.3s;
+        }
+
+        #applyFilters:hover {
+            background: #e08a00;
+        }
+
+        /* Cards de Métricas */
+        .metric-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .metric-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .metric-card h3 {
+            font-size: 16px;
+            margin-bottom: 10px;
+            color: #c87902;
+        }
+
+        .metric-card p {
+            font-size: 24px;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        /* Gráficos */
+        .charts-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 20px;
+        }
+
+        .chart-box {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 20px;
+            height: 300px;
+        }
+
+        .chart-box h3 {
+            text-align: center;
+            margin-bottom: 15px;
+            color: #c87902;
+            font-size: 16px;
+        }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .charts-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .chart-box {
+                height: 250px;
+            }
+        }
+        /* /Dashboard style */
+
+        /* Dropbdown */
+        #tableboxx {
+            display: none; /* Inicialmente oculta */
+        }
+
+        .dropdown-button {
+            background-color: #c87902;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 10px;
+            width: 380px;
+            margin-left: 15px;
+        
+           
+        }
+
+        .dropdown-button:hover {
+            background-color: rgb(232, 143, 0);
+            box-shadow: 0 0 10px rgba(152, 108, 6, 0.693);  
+        }
+
+        /* Botões de controle */
+        .view-controls {
+            display: flex;
+            gap: 10px;
+            margin-left: auto;
+        }
+
+        .view-controls button {
+            background-color: rgb(217, 129, 6);
+            padding: 10px;
+            border-radius: 10px;
+            color: #d3d3d3;
+            font-size: 16px;
+            cursor: pointer;
+            transition: .4s;
+            border: none;
+        }
+
+        .view-controls button:hover {
+            background-color: rgb(232, 143, 0);
+            box-shadow: 0 0 10px rgba(152, 108, 6, 0.693);
+        }
+
+        .view-controls button i {
+            font-size: 20px;
+            margin-right: 5px;
+        }
+
+        th.asc::after {
+            content: " ▲";
+            color: #c87902;
+        }
+
+        th.desc::after {
+            content: " ▼";
+            color: #c87902;
+        }
+
     </style>
 </head>
 <body>
@@ -548,9 +756,11 @@
                 <div class="search-container">
                     <i id="lupa" class='bx bx-search-alt-2'></i>
                     <input type="text" id="searchBox" placeholder="Buscar..." onkeyup="filtrarTabela()">
-                    <div>
-                        <button id="export" onclick="abrirModal()"><i class='bx bx-add-to-queue'></i> Novo Lead</button>
-                    </div>
+                </div>
+                <div class="view-controls">
+                    <button id="export" onclick="abrirModal()"><i class='bx bx-add-to-queue'></i>Novo Lead</button>
+                    <button id="toggleTable" onclick="mostrarTabela()"><i class='bx bx-table'></i>Mostrar Registros</button>
+                    <button id="toggleDashboard" onclick="mostrarDashboard()"><i class='bx bx-bar-chart-alt-2'></i>Dashboard</button>
                 </div>
             </div>
         </div>
@@ -676,7 +886,7 @@
     <main class="tableboxx" id="tableboxx">
         <div class="container">
             <table id="tabela-registros">
-                <thead style="position: sticky; top: 150px; z-index: 10;">
+                <thead>
                     <tr id="header-row">
                         <!-- Headers will be dynamically generated -->
                     </tr>
@@ -685,6 +895,81 @@
             </table>
         </div>
     </main>
+
+    <div class="dashboard-container" id="dashboard">
+        <h2>Dashboard                                 <i class='bx bxs-report'></i></h2>
+        
+        <!-- Filtros -->
+        <div class="filters">
+            <div class="filter-group">
+                <label for="filterHotel">Hotel:</label>
+                <select id="filterHotel"></select>
+            </div>
+            <div class="filter-group">
+                <label for="filterYear">Ano:</label>
+                <select id="filterYear"></select>
+            </div>
+            <div class="filter-group">
+                <label for="filterMonth">Mês:</label>
+                <select id="filterMonth">
+                    <option value="">Todos</option>
+                    <option value="1">Janeiro</option>
+                    <option value="2">Fevereiro</option>
+                    <option value="3">Março</option>
+                    <option value="4">Abril</option>
+                    <option value="5">Maio</option>
+                    <option value="6">Junho</option>
+                    <option value="7">Julho</option>
+                    <option value="8">Agosto</option>
+                    <option value="9">Setembro</option>
+                    <option value="10">Outubro</option>
+                    <option value="11">Novembro</option>
+                    <option value="12">Dezembro</option>
+                </select>
+            </div>
+            <button id="applyFilters">Aplicar Filtros</button>
+        </div>
+        
+        <!-- Cards de Métricas -->
+        <div class="metric-cards">
+            <div class="metric-card">
+                <h3>Total de Negociações</h3>
+                <p id="totalEventos">0</p>
+            </div>
+            <div class="metric-card">
+                <h3>Receita Total</h3>
+                <p id="receitaTotal">R$ 0,00</p>
+            </div>
+            <div class="metric-card">
+                <h3>Taxa de Conversão</h3>
+                <p id="taxaConversao">0%</p>
+            </div>
+            <div class="metric-card">
+                <h3>Valor Médio</h3>
+                <p id="valorMedio">R$ 0,00</p>
+            </div>
+        </div>
+        
+        <!-- Gráficos -->
+        <div class="charts-container">
+            <div class="chart-box">
+                <h3>Receita por Mês</h3>
+                <canvas id="receitaMesChart"></canvas>
+            </div>
+            <div class="chart-box">
+                <h3>Negociações por Hotel</h3>
+                <canvas id="eventosHotelChart"></canvas>
+            </div>
+            <div class="chart-box">
+                <h3>Status das Negociações</h3>
+                <canvas id="statusChart"></canvas>
+            </div>
+            <div class="chart-box">
+                <h3>Distribuição por Segmento</h3>
+                <canvas id="segmentoChart"></canvas>
+            </div>
+        </div>
+    </div>
 
     <!-- Suport -->
     <div class="add-icon-container">
@@ -881,42 +1166,101 @@
                 
                 const response = await fetch(scriptURL);
                 const registros = await response.json();
-    
+
                 // Verifique o que está sendo retornado da API
                 console.log("Registros retornados:", registros);
-    
+
                 if (registros.length === 0) {
                     document.getElementById("tabela-registros").innerHTML = "Nenhum dado encontrado.";
                     return;
                 }
-    
+
                 const thead = document.getElementById("header-row");
                 const tbody = document.querySelector("#tabela-registros tbody");
                 tbody.innerHTML = ""; // Limpa o corpo da tabela antes de adicionar os novos dados
-    
+
                 // Criar cabeçalhos
                 thead.innerHTML = "";
                 Object.keys(registros[0]).forEach(key => {
                     const th = document.createElement("th");
                     th.textContent = key;
+                    th.addEventListener("click", () => ordenarTabela(key));
                     thead.appendChild(th);
                 });
-    
-                // Criar linhas da tabela
+
+                // Criar linhas da tabela com formatação condicional
                 registros.forEach(registro => {
                     const tr = document.createElement("tr");
-                    Object.values(registro).forEach(valor => {
+                    let statusIndex = -1;
+                    let statusValue = "";
+                    
+                    Object.entries(registro).forEach(([key, valor], index) => {
                         const td = document.createElement("td");
-    
+                        
                         // Verifica se o valor é uma data e formata, caso contrário, deixa como está
                         if (valor && isData(valor)) {
                             td.textContent = formatarData(valor);
                         } else {
                             td.textContent = valor;
                         }
-    
+                        
+                        // Guarda o índice e valor da coluna de status
+                        if (key === "status") {
+                            statusIndex = index;
+                            statusValue = valor;
+                            
+                            // Aplica formatação condicional na célula de status
+                            switch (valor) {
+                                case "Definitivo":
+                                    td.style.backgroundColor = "#7ed957"; // Verde claro
+                                    td.style.color = "#155724"; // Verde escuro
+                                    break;
+                                case "Cancelado":
+                                    td.style.backgroundColor = "#ff4545"; // Vermelho claro
+                                    td.style.color = "#8f0505"; // Vermelho escuro
+                                    break;
+                                case "Tentativo":
+                                    td.style.backgroundColor = "#fdcc33"; // Amarelo claro
+                                    td.style.color = "#846400"; // Amarelo escuro
+                                    break;
+                                case "Não confirmado":
+                                    td.style.backgroundColor = "#e2e3e5"; // Cinza claro
+                                    td.style.color = "#383d41"; // Cinza escuro
+                                    break;
+                            }
+                        }
+                        
                         tr.appendChild(td);
                     });
+                    
+                    // Aplica a cor da fonte em toda a linha, baseada no status
+                    if (statusValue) {
+                        let textColor;
+                        switch (statusValue) {
+                            case "Definitivo":
+                                textColor = "#68f82a"; // Verde escuro
+                                break;
+                            case "Cancelado":
+                                textColor = "#ff6d6d"; // Vermelho escuro
+                                break;
+                            case "Tentativo":
+                                textColor = "#ffb800"; // Amarelo escuro
+                                break;
+                            case "Não confirmado":
+                                textColor = "#101213"; // Cinza escuro
+                                break;
+                            default:
+                                textColor = "#b0b1b3"; // Cor padrão
+                        }
+                        
+                        // Aplica a cor a todas as células da linha
+                        Array.from(tr.children).forEach((cell, index) => {
+                            if (index !== statusIndex) { // Não altera a cor da célula de status que já foi definida
+                                cell.style.color = textColor;
+                            }
+                        });
+                    }
+                    
                     tbody.appendChild(tr);
                 });
             } catch (error) {
@@ -927,16 +1271,50 @@
                 toggleLoader(false);
             }
         }
+  
     
         function filtrarTabela() {
             const filtro = document.getElementById("searchBox").value.toLowerCase();
             const linhas = document.querySelectorAll("#tabela-registros tbody tr");
-    
+            
+            // Remover highlights anteriores
+            document.querySelectorAll(".highlight-search").forEach(el => {
+                el.outerHTML = el.textContent;
+            });
+            
+            // Se o filtro estiver vazio, apenas mostrar todas as linhas
+            if (filtro.trim() === "") {
+                linhas.forEach(linha => {
+                    linha.style.display = "";
+                });
+                return;
+            }
+            
             linhas.forEach(linha => {
-                const textoLinha = linha.textContent.toLowerCase();
-                linha.style.display = textoLinha.includes(filtro) ? "" : "none";
+                let encontrado = false;
+                const celulas = linha.querySelectorAll("td");
+                
+                celulas.forEach(celula => {
+                    const conteudo = celula.textContent.toLowerCase();
+                    
+                    if (conteudo.includes(filtro)) {
+                        encontrado = true;
+                        
+                        // Criar uma versão do texto com highlight
+                        const regex = new RegExp(filtro, 'gi');
+                        const textoOriginal = celula.textContent;
+                        const textoComHighlight = textoOriginal.replace(regex, match => 
+                            `<span class="highlight-search">${match}</span>`
+                        );
+                        
+                        celula.innerHTML = textoComHighlight;
+                    }
+                });
+                
+                linha.style.display = encontrado ? "" : "none";
             });
         }
+
 
         document.addEventListener("DOMContentLoaded", carregarDados);
 
@@ -985,7 +1363,7 @@
         // Função para validar o formulário antes de enviar
         function validarFormulario() {
             const form = document.getElementById("add-form");
-            const camposObrigatorios = ["ID", "dataOrcamento", "agencia", "responsavel", "nomeEvento"];
+            const camposObrigatorios = ["ID", "dataOrcamento", "agencia", "responsavel"];
             
             let valido = true;
             let mensagemErro = "Por favor, preencha os seguintes campos obrigatórios:\n";
@@ -1033,21 +1411,9 @@
                 // Se estiver editando um registro existente
                 if (registroSelecionado && registroSelecionado["Linha"]) {
                     formData.append("Linha", registroSelecionado["Linha"]);
-                    formData.append("_method", "PUT"); // Adicione esta linha
+                    formData.append("_method", "PUT");
                     response = await fetch(scriptURL, { 
-                        method: "POST", 
-                        body: formData 
-                    });
-                    mostrarFeedback("Registro atualizado com sucesso!", "sucesso");
-                }
-
-                
-                // Se estiver editando um registro existente
-                if (registroSelecionado && registroSelecionado["Linha"]) {
-                    formData.append("Linha", registroSelecionado["Linha"]);
-                    formData.append("_method", "PUT"); // Adicione esta linha para indicar que é uma atualização
-                    response = await fetch(scriptURL, { 
-                        method: "POST", // Mude de PUT para POST
+                        method: "POST",
                         body: formData 
                     });
                     mostrarFeedback("Registro atualizado com sucesso!", "sucesso");
@@ -1059,6 +1425,7 @@
                     });
                     mostrarFeedback("Registro adicionado com sucesso!", "sucesso");
                 }
+
                 
                 fecharModal();
                 
@@ -1169,8 +1536,540 @@
                 feedback.style.opacity = "0";
             }, 3000);
         }
+
+
+        // // ----- ORDENAR TABELA ----- 
+        // Variáveis para controlar a ordenação
+        let colunaOrdenacao = null;
+        let ordemAscendente = true;
+
+        // Função para ordenar a tabela
+        function ordenarTabela(coluna) {
+            const tbody = document.querySelector("#tabela-registros tbody");
+            const linhas = Array.from(tbody.querySelectorAll("tr"));
+            
+            // Se clicar na mesma coluna, inverte a ordem
+            if (coluna === colunaOrdenacao) {
+                ordemAscendente = !ordemAscendente;
+            } else {
+                colunaOrdenacao = coluna;
+                ordemAscendente = true;
+            }
+            
+            // Obter o índice da coluna
+            const headers = document.querySelectorAll("#header-row th");
+            let indiceColuna = -1;
+            
+            for (let i = 0; i < headers.length; i++) {
+                if (headers[i].textContent === coluna) {
+                    indiceColuna = i;
+                    break;
+                }
+            }
+            
+            if (indiceColuna === -1) return;
+            
+            // Ordenar as linhas
+            linhas.sort((a, b) => {
+                const valorA = a.querySelectorAll("td")[indiceColuna].textContent.trim();
+                const valorB = b.querySelectorAll("td")[indiceColuna].textContent.trim();
+                
+                // Verificar se é uma data no formato DD/MM/YYYY
+                if (valorA.match(/^\d{2}\/\d{2}\/\d{4}$/) && valorB.match(/^\d{2}\/\d{2}\/\d{4}$/)) {
+                    const [diaA, mesA, anoA] = valorA.split('/');
+                    const [diaB, mesB, anoB] = valorB.split('/');
+                    
+                    const dataA = new Date(`${anoA}-${mesA}-${diaA}`);
+                    const dataB = new Date(`${anoB}-${mesB}-${diaB}`);
+                    
+                    return ordemAscendente ? dataA - dataB : dataB - dataA;
+                }
+                
+                // Verificar se são números
+                if (!isNaN(valorA) && !isNaN(valorB)) {
+                    return ordemAscendente ? 
+                        parseFloat(valorA) - parseFloat(valorB) : 
+                        parseFloat(valorB) - parseFloat(valorA);
+                }
+                
+                // Comparação de texto
+                return ordemAscendente ? 
+                    valorA.localeCompare(valorB) : 
+                    valorB.localeCompare(valorA);
+            });
+            
+            // Atualizar a tabela com as linhas ordenadas
+            tbody.innerHTML = "";
+            linhas.forEach(linha => tbody.appendChild(linha));
+            
+            // Atualizar indicador visual de ordenação
+            headers.forEach(th => {
+                th.classList.remove("asc", "desc");
+            });
+            
+            const thAtual = Array.from(headers).find(th => th.textContent === coluna);
+            thAtual.classList.add(ordemAscendente ? "asc" : "desc");
+        }
+
+        // ----- /ORDENAR TABELA ----- 
     </script>   
     <!-- /GRC Function -->
+
+    <!-- GRC_Dashboard Function -->
+    <script>
+        // Dashboard JavaScript
+        document.addEventListener("DOMContentLoaded", async function() {
+            await carregarDados();
+            setTimeout(inicializarDashboard, 1000); // Pequeno atraso para garantir que os dados estejam disponíveis
+      
+
+            
+            // Configurar evento para o botão de filtro
+            document.getElementById("applyFilters").addEventListener("click", atualizarDashboard);
+        });
+
+        // Variáveis globais para os gráficos
+        let receitaMesChart, eventosHotelChart, statusChart, segmentoChart;
+        let dadosCompletos = [];
+
+        // Inicializar o dashboard
+        async function inicializarDashboard() {
+            try {
+                // Buscar dados da API
+                const response = await fetch(scriptURL);
+                dadosCompletos = await response.json();
+                
+                // Preencher os filtros
+                preencherFiltros();
+                
+                // Criar gráficos iniciais
+                criarGraficos(dadosCompletos);
+                
+                // Atualizar métricas
+                atualizarMetricas(dadosCompletos);
+                
+            } catch (error) {
+                console.error("Erro ao inicializar dashboard:", error);
+            }
+        }
+
+        // Preencher os filtros com base nos dados
+        function preencherFiltros() {
+            // Filtro de Hotel
+            const hoteis = [...new Set(dadosCompletos.map(item => item.hotel).filter(Boolean))];
+            const selectHotel = document.getElementById("filterHotel");
+            selectHotel.innerHTML = '<option value="">Todos os Hotéis</option>';
+            hoteis.forEach(hotel => {
+                const option = document.createElement("option");
+                option.value = hotel;
+                option.textContent = hotel;
+                selectHotel.appendChild(option);
+            });
+            
+            // Filtro de Ano
+            const anos = [...new Set(dadosCompletos.map(item => {
+                if (item.dataOrcamento) {
+                    const data = new Date(converterDataParaISO(item.dataOrcamento));
+                    return data.getFullYear();
+                }
+                return null;
+            }).filter(Boolean))];
+            
+            const selectAno = document.getElementById("filterYear");
+            selectAno.innerHTML = '<option value="">Todos os Anos</option>';
+            anos.sort((a, b) => b - a).forEach(ano => {
+                const option = document.createElement("option");
+                option.value = ano;
+                option.textContent = ano;
+                selectAno.appendChild(option);
+            });
+        }
+
+        // Converter data do formato DD/MM/YYYY para YYYY-MM-DD
+        function converterDataParaISO(dataString) {
+            if (!dataString) return null;
+            
+            // Verificar se já está no formato ISO
+            if (dataString.match(/^\d{4}-\d{2}-\d{2}$/)) return dataString;
+            
+            // Verificar formato DD/MM/YYYY
+            const partes = dataString.split('/');
+            if (partes.length === 3) {
+                return `${partes[2]}-${partes[1]}-${partes[0]}`;
+            }
+            
+            // Tentar converter usando Date
+            try {
+                const data = new Date(dataString);
+                if (!isNaN(data.getTime())) {
+                    return data.toISOString().split('T')[0];
+                }
+            } catch (e) {
+                console.error("Erro ao converter data:", dataString);
+            }
+            
+            return null;
+        }
+
+
+        // Filtrar dados com base nos filtros selecionados
+        function filtrarDados() {
+            const hotelSelecionado = document.getElementById("filterHotel").value;
+            const anoSelecionado = document.getElementById("filterYear").value;
+            const mesSelecionado = document.getElementById("filterMonth").value;
+            
+            return dadosCompletos.filter(item => {
+                // Filtrar por hotel
+                if (hotelSelecionado && item.hotel !== hotelSelecionado) return false;
+                
+                // Converter a data para um objeto Date
+                if (!item.dataOrcamento) return true;
+                const data = new Date(converterDataParaISO(item.dataOrcamento));
+                
+                // Filtrar por ano
+                if (anoSelecionado && data.getFullYear() != anoSelecionado) return false;
+                
+                // Filtrar por mês
+                if (mesSelecionado && (data.getMonth() + 1) != mesSelecionado) return false;
+                
+                return true;
+            });
+        }
+
+        // Atualizar o dashboard com base nos filtros
+        function atualizarDashboard() {
+            const dadosFiltrados = filtrarDados();
+            
+            // Atualizar gráficos
+            atualizarGraficos(dadosFiltrados);
+            
+            // Atualizar métricas
+            atualizarMetricas(dadosFiltrados);
+        }
+
+        // Atualizar as métricas principais
+        function atualizarMetricas(dados) {
+            // Total de eventos
+            document.getElementById("totalEventos").textContent = dados.length;
+            
+            // Receita total
+            const receitaTotal = dados.reduce((total, item) => {
+                return total + (parseFloat(item.receitaTotal) || 0);
+            }, 0);
+            document.getElementById("receitaTotal").textContent = `R$ ${receitaTotal.toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+            
+            // Taxa de conversão
+            const confirmados = dados.filter(item => item.status === "Confirmado").length;
+            const taxaConversao = dados.length > 0 ? (confirmados / dados.length) * 100 : 0;
+            document.getElementById("taxaConversao").textContent = `${taxaConversao.toFixed(1)}%`;
+            
+            // Valor médio
+            const valorMedio = dados.length > 0 ? receitaTotal / dados.length : 0;
+            document.getElementById("valorMedio").textContent = `R$ ${valorMedio.toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+        }
+
+        // Criar os gráficos iniciais
+        function criarGraficos(dados) {
+            // Configuração de cores
+            const cores = [
+                '#FF9F40', '#FFCD56', '#4BC0C0', '#36A2EB', '#9966FF', 
+                '#FF6384', '#C9CBCF', '#7FD8BE', '#B2F7EF', '#E2B4BD'
+            ];
+            
+            // 1. Gráfico de Receita por Mês
+            const dadosReceitaMes = processarDadosReceitaPorMes(dados);
+            const ctxReceitaMes = document.getElementById('receitaMesChart').getContext('2d');
+            receitaMesChart = new Chart(ctxReceitaMes, {
+                type: 'bar',
+                data: {
+                    labels: dadosReceitaMes.labels,
+                    datasets: [{
+                        label: 'Receita Total (R$)',
+                        data: dadosReceitaMes.valores,
+                        backgroundColor: cores[0],
+                        borderColor: cores[0],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: '#b0b1b3'
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                color: '#b0b1b3'
+                            },
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                color: '#b0b1b3'
+                            },
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // 2. Gráfico de Eventos por Hotel
+            const dadosEventosHotel = processarDadosEventosPorHotel(dados);
+            const ctxEventosHotel = document.getElementById('eventosHotelChart').getContext('2d');
+            eventosHotelChart = new Chart(ctxEventosHotel, {
+                type: 'pie',
+                data: {
+                    labels: dadosEventosHotel.labels,
+                    datasets: [{
+                        data: dadosEventosHotel.valores,
+                        backgroundColor: cores,
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                            labels: {
+                                color: '#b0b1b3'
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // 3. Gráfico de Status dos Eventos
+            const dadosStatus = processarDadosPorStatus(dados);
+            const ctxStatus = document.getElementById('statusChart').getContext('2d');
+            statusChart = new Chart(ctxStatus, {
+                type: 'doughnut',
+                data: {
+                    labels: dadosStatus.labels,
+                    datasets: [{
+                        data: dadosStatus.valores,
+                        backgroundColor: [cores[2], cores[3], cores[5]],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                            labels: {
+                                color: '#b0b1b3'
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // 4. Gráfico de Distribuição por Segmento
+            const dadosSegmento = processarDadosPorSegmento(dados);
+            const ctxSegmento = document.getElementById('segmentoChart').getContext('2d');
+            segmentoChart = new Chart(ctxSegmento, {
+                type: 'bar',
+                data: {
+                    labels: dadosSegmento.labels,
+                    datasets: [{
+                        label: 'Número de Eventos',
+                        data: dadosSegmento.valores,
+                        backgroundColor: cores[2],
+                        borderColor: cores[2],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: '#b0b1b3'
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            ticks: {
+                                color: '#b0b1b3'
+                            },
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            }
+                        },
+                        x: {
+                            beginAtZero: true,
+                            ticks: {
+                                color: '#b0b1b3'
+                            },
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        
+        // Atualizar os gráficos com novos dados
+        function atualizarGraficos(dados) {
+            // Verificar se os gráficos foram inicializados
+            if (!receitaMesChart || !eventosHotelChart || !statusChart || !segmentoChart) {
+                // Se os gráficos não existirem, crie-os primeiro
+                criarGraficos(dados);
+                return;
+            }
+
+            // 1. Atualizar gráfico de Receita por Mês
+            const dadosReceitaMes = processarDadosReceitaPorMes(dados);
+            receitaMesChart.data.labels = dadosReceitaMes.labels;
+            receitaMesChart.data.datasets[0].data = dadosReceitaMes.valores;
+            receitaMesChart.update();
+            
+            // 2. Atualizar gráfico de Eventos por Hotel
+            const dadosEventosHotel = processarDadosEventosPorHotel(dados);
+            eventosHotelChart.data.labels = dadosEventosHotel.labels;
+            eventosHotelChart.data.datasets[0].data = dadosEventosHotel.valores;
+            eventosHotelChart.update();
+            
+            // 3. Atualizar gráfico de Status dos Eventos
+            const dadosStatus = processarDadosPorStatus(dados);
+            statusChart.data.labels = dadosStatus.labels;
+            statusChart.data.datasets[0].data = dadosStatus.valores;
+            statusChart.update();
+            
+            // 4. Atualizar gráfico de Distribuição por Segmento
+            const dadosSegmento = processarDadosPorSegmento(dados);
+            segmentoChart.data.labels = dadosSegmento.labels;
+            segmentoChart.data.datasets[0].data = dadosSegmento.valores;
+            segmentoChart.update();
+        }
+
+        // Função para processar dados para o gráfico de Receita por Mês
+        function processarDadosReceitaPorMes(dados) {
+            const meses = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 
+                        'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
+            const receitaPorMes = Array(12).fill(0);
+            
+            dados.forEach(item => {
+                if (item.dataOrcamento) {
+                    const data = new Date(converterDataParaISO(item.dataOrcamento));
+                    const mes = data.getMonth(); // 0-11
+                    receitaPorMes[mes] += parseFloat(item.receitaTotal) || 0;
+                }
+            });
+            
+            return {
+                labels: meses,
+                valores: receitaPorMes
+            };
+        }
+
+        // Função para processar dados para o gráfico de Eventos por Hotel
+        function processarDadosEventosPorHotel(dados) {
+            const hoteisMap = new Map();
+            
+            dados.forEach(item => {
+                if (item.hotel) {
+                    if (hoteisMap.has(item.hotel)) {
+                        hoteisMap.set(item.hotel, hoteisMap.get(item.hotel) + 1);
+                    } else {
+                        hoteisMap.set(item.hotel, 1);
+                    }
+                }
+            });
+            
+            return {
+                labels: Array.from(hoteisMap.keys()),
+                valores: Array.from(hoteisMap.values())
+            };
+        }
+
+        // Função para processar dados para o gráfico de Status dos Eventos
+        function processarDadosPorStatus(dados) {
+            const statusMap = new Map();
+            
+            dados.forEach(item => {
+                if (item.status) {
+                    if (statusMap.has(item.status)) {
+                        statusMap.set(item.status, statusMap.get(item.status) + 1);
+                    } else {
+                        statusMap.set(item.status, 1);
+                    }
+                }
+            });
+            
+            return {
+                labels: Array.from(statusMap.keys()),
+                valores: Array.from(statusMap.values())
+            };
+        }
+
+        // Função para processar dados para o gráfico de Distribuição por Segmento
+        function processarDadosPorSegmento(dados) {
+            const segmentoMap = new Map();
+            
+            dados.forEach(item => {
+                if (item.segmento) {
+                    if (segmentoMap.has(item.segmento)) {
+                        segmentoMap.set(item.segmento, segmentoMap.get(item.segmento) + 1);
+                    } else {
+                        segmentoMap.set(item.segmento, 1);
+                    }
+                }
+            });
+            
+            // Ordenar por quantidade (do maior para o menor)
+            const segmentosOrdenados = [...segmentoMap.entries()]
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 10); // Limitar aos 10 principais segmentos
+            
+            return {
+                labels: segmentosOrdenados.map(item => item[0]),
+                valores: segmentosOrdenados.map(item => item[1])
+            };
+        }
+
+        // Funções para alternar entre tabela e dashboard
+        function mostrarTabela() {
+            document.getElementById("tableboxx").style.display = "block";
+            document.getElementById("dashboard").style.display = "none";
+            document.getElementById("toggleTable").style.backgroundColor = "#e08a00";
+            document.getElementById("toggleDashboard").style.backgroundColor = "rgb(217, 129, 6)";
+        }
+
+        function mostrarDashboard() {
+            document.getElementById("tableboxx").style.display = "none";
+            document.getElementById("dashboard").style.display = "block";
+            document.getElementById("toggleDashboard").style.backgroundColor = "#e08a00";
+            document.getElementById("toggleTable").style.backgroundColor = "rgb(217, 129, 6)";
+        }
+
+        // Inicializar mostrando a tabela por padrão
+        document.addEventListener("DOMContentLoaded", function() {
+            mostrarTabela();
+        });
+        
+    </script>   
+    <!-- /GRC_Dashboard Function -->
+
+   
     
 </body>
 </html>
